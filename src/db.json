@@ -1,0 +1,2021 @@
+{
+  "version": 6,
+  "sections": [
+    {
+      "id": "ce6641",
+      "code": "CE6641",
+      "name": "CE6641",
+      "headcount": 20
+    },
+    {
+      "id": "ce6741",
+      "code": "CE6741",
+      "name": "CE6741",
+      "headcount": 20
+    },
+    {
+      "id": "ce6821",
+      "code": "CE6821",
+      "name": "CE6821",
+      "headcount": 4
+    },
+    {
+      "id": "ce6841",
+      "code": "CE6841",
+      "name": "CE6841",
+      "headcount": 22
+    },
+    {
+      "id": "s_3673969b",
+      "code": "CE6941",
+      "name": "CE6941",
+      "headcount": 20
+    },
+    {
+      "id": "s_a4e39d13",
+      "code": "CE6921",
+      "name": "CE6921",
+      "headcount": 15
+    }
+  ],
+  "courses": [
+    {
+      "id": "c_0c6c1567",
+      "code": "GE-010-001",
+      "name": "ภาษาอังกฤษง่ายนิดเดียว (English is easy)",
+      "sectionId": "s_3673969b",
+      "credits": 3,
+      "theoryHours": 3,
+      "practicalHours": 0,
+      "instructorIds": [
+        "i_757ba573"
+      ]
+    },
+    {
+      "id": "c_227e3954",
+      "code": "GE-010-003",
+      "name": "ดิจิทัลกับชีวิตวิถีใหม่ (Digital Technology of New Normal)",
+      "sectionId": "s_3673969b",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2,
+      "instructorIds": [
+        "i2"
+      ]
+    },
+    {
+      "id": "c_54f27cef",
+      "code": "SC-061-103",
+      "name": "แคลคูลัสสำหรับวิศวกรรม 1",
+      "sectionId": "s_3673969b",
+      "credits": 3,
+      "theoryHours": 3,
+      "practicalHours": 0,
+      "instructorIds": [
+        "i_91d43703"
+      ]
+    },
+    {
+      "id": "c_27133835",
+      "code": "EN-001-001",
+      "name": "เขียนแบบวิศวกรรม",
+      "sectionId": "s_3673969b",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 3,
+      "instructorIds": [
+        "i11"
+      ]
+    },
+    {
+      "id": "c_bdc6d9a6",
+      "code": "EN-001-006",
+      "name": "วิศวกรรมไฟฟ้าพื้นฐาน",
+      "sectionId": "s_3673969b",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 3,
+      "instructorIds": [
+        "i12"
+      ]
+    },
+    {
+      "id": "c_2a8d2779",
+      "code": "EN-001-019",
+      "name": "แก่นวิศวกรรมคอมพิวเตอร์",
+      "sectionId": "s_3673969b",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2,
+      "instructorIds": [
+        "i1"
+      ]
+    },
+    {
+      "id": "c_bf333e94",
+      "code": "EN-012-207",
+      "name": "ตรรกศาสตร์ของดิจิตอลคอมพิวเตอร์",
+      "sectionId": "s_3673969b",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 3,
+      "instructorIds": [
+        "i9"
+      ]
+    },
+    {
+      "id": "c_b48d485c",
+      "code": "GE-010-004",
+      "name": "คุณค่ามหาวิทยาลัยกาฬสินธุ์ (Value of Kalasin University)",
+      "sectionId": "ce6841",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2,
+      "instructorIds": [
+        "i_de51bbaf"
+      ]
+    },
+    {
+      "id": "c_9e9ff957",
+      "code": "GE-010-005",
+      "name": "ชีวิตออกแบบได้ (Ideal Life)",
+      "sectionId": "ce6841",
+      "credits": 3,
+      "theoryHours": 3,
+      "practicalHours": 0,
+      "instructorIds": [
+        "i_13746bb7"
+      ]
+    },
+    {
+      "id": "c_0ce7771b",
+      "code": "EN-001-007",
+      "name": "ความน่าจะเป็นและสถิติวิศวกรรม",
+      "sectionId": "ce6841",
+      "credits": 3,
+      "theoryHours": 3,
+      "practicalHours": 0,
+      "instructorIds": [
+        "i8"
+      ]
+    },
+    {
+      "id": "c_69ff7def",
+      "code": "EN-001-020",
+      "name": "การเขียนโปรแกรมและแก้ปัญหา",
+      "sectionId": "ce6841",
+      "credits": 2,
+      "theoryHours": 1,
+      "practicalHours": 2,
+      "instructorIds": [
+        "i1"
+      ]
+    },
+    {
+      "id": "c_d3773119",
+      "code": "EN-012-205",
+      "name": "โครงสร้างข้อมูลและอัลกอริทึม",
+      "sectionId": "ce6841",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 3,
+      "instructorIds": [
+        "i2"
+      ]
+    },
+    {
+      "id": "c_7f31bae1",
+      "code": "EN-012-208",
+      "name": "ระบบปฏิบัติการและโปรแกรมระบบ",
+      "sectionId": "ce6841",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2,
+      "instructorIds": [
+        "i10"
+      ]
+    },
+    {
+      "id": "c_85c65cff",
+      "code": "EN-012-210",
+      "name": "ระบบสมองกลฝังตัว",
+      "sectionId": "ce6841",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 3,
+      "instructorIds": [
+        "i6"
+      ]
+    },
+    {
+      "id": "c_4af93440",
+      "code": "EN-012-211",
+      "name": "โครงงานวิศวกรรมคอมพิวเตอร์ 1",
+      "sectionId": "ce6841",
+      "credits": 1,
+      "theoryHours": 0,
+      "practicalHours": 3,
+      "instructorIds": [
+        "i1"
+      ]
+    },
+    {
+      "id": "c_b26a1676",
+      "code": "EN-001-007",
+      "name": "ความน่าจะเป็นและสถิติวิศวกรรม",
+      "sectionId": "ce6821",
+      "credits": 3,
+      "theoryHours": 3,
+      "practicalHours": 0,
+      "instructorIds": [
+        "i8"
+      ]
+    },
+    {
+      "id": "c_c799ff92",
+      "code": "EN-012-314",
+      "name": "ปัญญาประดิษฐ์",
+      "sectionId": "ce6821",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2,
+      "instructorIds": [
+        "i1"
+      ]
+    },
+    {
+      "id": "c_a06e0796",
+      "code": "EN-012-315",
+      "name": "วิศวกรรมซอฟต์แวร์",
+      "sectionId": "ce6821",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2,
+      "instructorIds": [
+        "i4"
+      ]
+    },
+    {
+      "id": "c_e65ed240",
+      "code": "EN-012-316",
+      "name": "วิทยาการข้อมูลและการแสดงผลข้อมูล",
+      "sectionId": "ce6821",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2,
+      "instructorIds": [
+        "i3"
+      ]
+    },
+    {
+      "id": "c_7bc33d5a",
+      "code": "EN-012-318",
+      "name": "โครงงานวิศวกรรมคอมพิวเตอร์ 4",
+      "sectionId": "ce6821",
+      "credits": 1,
+      "theoryHours": 0,
+      "practicalHours": 3,
+      "instructorIds": [
+        "i3"
+      ]
+    },
+    {
+      "id": "c_b60cc62b",
+      "code": "EN-015-319",
+      "name": "การเตรียมสหกิจศึกษา",
+      "sectionId": "ce6821",
+      "credits": 1,
+      "theoryHours": 0,
+      "practicalHours": 2,
+      "instructorIds": [
+        "i3"
+      ]
+    },
+    {
+      "id": "c_e669aa11",
+      "code": "EN-013-339",
+      "name": "หัวข้อพิเศษทางด้านการพัฒนาซอฟต์แวร์",
+      "sectionId": "ce6821",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2,
+      "instructorIds": [
+        "i10"
+      ]
+    },
+    {
+      "id": "c_14666c40",
+      "code": "EN-013-308",
+      "name": "อินเทอร์เน็ตของสรรพสิ่ง",
+      "sectionId": "ce6821",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 3,
+      "instructorIds": [
+        "i7"
+      ]
+    },
+    {
+      "id": "c_be9892b7",
+      "code": "EN-013-338",
+      "name": "การออกแบบการปฏิสัมพันธ์และประสบการณ์ของผู้ใช้",
+      "sectionId": "ce6821",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2,
+      "instructorIds": [
+        "i3"
+      ]
+    },
+    {
+      "id": "c_b1b4882b",
+      "code": "GE-020-008",
+      "name": "การพัฒนาธุรกิจในสังคมดิจิทัล (Entrepreneur Studies)",
+      "sectionId": "ce6741",
+      "credits": 3,
+      "theoryHours": 3,
+      "practicalHours": 0,
+      "instructorIds": [
+        "i_bb2ae438"
+      ]
+    },
+    {
+      "id": "c_8fbb328c",
+      "code": "EN-001-016",
+      "name": "ระบบควบคุมอัตโนมัติ",
+      "sectionId": "ce6741",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2,
+      "instructorIds": [
+        "i5"
+      ]
+    },
+    {
+      "id": "c_0ddc6bcd",
+      "code": "EN-012-314",
+      "name": "ปัญญาประดิษฐ์",
+      "sectionId": "ce6741",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2,
+      "instructorIds": [
+        "i1"
+      ]
+    },
+    {
+      "id": "c_89111ccd",
+      "code": "EN-013-339",
+      "name": "หัวข้อพิเศษทางด้านการพัฒนาซอฟต์แวร์",
+      "sectionId": "ce6741",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2,
+      "instructorIds": [
+        "i10"
+      ]
+    },
+    {
+      "id": "c_71cf2c00",
+      "code": "EN-013-308",
+      "name": "อินเทอร์เน็ตของสรรพสิ่ง",
+      "sectionId": "ce6741",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 3,
+      "instructorIds": [
+        "i7"
+      ]
+    },
+    {
+      "id": "c_d221b848",
+      "code": "EN-012-317",
+      "name": "โครงงานวิศวกรรมคอมพิวเตอร์ 3",
+      "sectionId": "ce6741",
+      "credits": 1,
+      "theoryHours": 0,
+      "practicalHours": 3,
+      "instructorIds": [
+        "i6"
+      ]
+    },
+    {
+      "id": "c_1abf9c38",
+      "code": "EN-013-338",
+      "name": "การออกแบบการปฏิสัมพันธ์และประสบการณ์ของผู้ใช้",
+      "sectionId": "ce6741",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2,
+      "instructorIds": [
+        "i3"
+      ]
+    },
+    {
+      "id": "c_3d1cac0b",
+      "code": "EN-015-420",
+      "name": "สหกิจศึกษา",
+      "sectionId": "ce6641",
+      "credits": 6,
+      "theoryHours": 0,
+      "practicalHours": 3,
+      "instructorIds": [
+        "i4"
+      ]
+    },
+    {
+      "id": "c_377bb09b",
+      "code": "GE-010-004",
+      "name": "คุณค่ามหาวิทยาลัยกาฬสินธุ์ (Value of Kalasin University)",
+      "sectionId": "s_a4e39d13",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2,
+      "instructorIds": [
+        "i_de51bbaf"
+      ]
+    },
+    {
+      "id": "c_a884d303",
+      "code": "GE-020-008",
+      "name": "การพัฒนาธุรกิจในสังคมดิจิทัล (Entrepreneur Studies)",
+      "sectionId": "s_a4e39d13",
+      "credits": 3,
+      "theoryHours": 3,
+      "practicalHours": 0,
+      "instructorIds": [
+        "i_d38d66d5"
+      ]
+    },
+    {
+      "id": "c_0ebd9f45",
+      "code": "EN-001-001",
+      "name": "เขียนแบบวิศวกรรม",
+      "sectionId": "s_a4e39d13",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 3,
+      "instructorIds": [
+        "i11"
+      ]
+    },
+    {
+      "id": "c_d93d6788",
+      "code": "EN-001-006",
+      "name": "วิศวกรรมไฟฟ้าพื้นฐาน",
+      "sectionId": "s_a4e39d13",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 3,
+      "instructorIds": [
+        "i12"
+      ]
+    },
+    {
+      "id": "c_4d87a64b",
+      "code": "EN-001-019",
+      "name": "แก่นวิศวกรรมคอมพิวเตอร์",
+      "sectionId": "s_a4e39d13",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2,
+      "instructorIds": [
+        "i1"
+      ]
+    },
+    {
+      "id": "c_2f1509ca",
+      "code": "EN-001-020",
+      "name": "การเขียนโปรแกรมและแก้ปัญหา",
+      "sectionId": "s_a4e39d13",
+      "credits": 2,
+      "theoryHours": 1,
+      "practicalHours": 2,
+      "instructorIds": [
+        "i1"
+      ]
+    },
+    {
+      "id": "c_292dd672",
+      "code": "EN-012-205",
+      "name": "โครงสร้างข้อมูลและอัลกอริทึม",
+      "sectionId": "s_a4e39d13",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 3,
+      "instructorIds": [
+        "i2"
+      ]
+    },
+    {
+      "id": "c_fbb6db9c",
+      "code": "EN-012-104",
+      "name": "การสัมมนาทางวิศวกรรมคอมพิวเตอร์",
+      "sectionId": "s_a4e39d13",
+      "credits": 1,
+      "theoryHours": 0,
+      "practicalHours": 3,
+      "instructorIds": [
+        "i10"
+      ]
+    },
+    {
+      "id": "c_a7501249",
+      "code": "SC-061-103",
+      "name": "แคลคูลัสสำหรับวิศวกรรม 1",
+      "sectionId": "s_a4e39d13",
+      "credits": 3,
+      "theoryHours": 3,
+      "practicalHours": 0,
+      "instructorIds": [
+        "i_91d43703"
+      ]
+    }
+  ],
+  "instructors": [
+    {
+      "id": "i1",
+      "name": "อ.สรายุทธ กรวิรัตน์"
+    },
+    {
+      "id": "i2",
+      "name": "อ.อัจฉรา ชุมพล"
+    },
+    {
+      "id": "i3",
+      "name": "อ.ธนกร ญานกาย"
+    },
+    {
+      "id": "i4",
+      "name": "อ.วรพจน์ สมมูล"
+    },
+    {
+      "id": "i5",
+      "name": "อ.ศิวณุ เหล่าบุตรสา"
+    },
+    {
+      "id": "i6",
+      "name": "อ.รณชัย สังหมื่นเม้า"
+    },
+    {
+      "id": "i7",
+      "name": "อ.อุ้มบุญ เชลียงรัชต์ชัย"
+    },
+    {
+      "id": "i8",
+      "name": "อ.กฤษฎา"
+    },
+    {
+      "id": "i9",
+      "name": "อ.ภูริ จันทิมา"
+    },
+    {
+      "id": "i10",
+      "name": "อ.กำธร สารวรรณ"
+    },
+    {
+      "id": "i11",
+      "name": "อ.อนุวัฒน์ ภาชนะวรรณ์"
+    },
+    {
+      "id": "i12",
+      "name": "อ.สรายุทธ ฐิตะภาส"
+    },
+    {
+      "id": "i_bb2ae438",
+      "name": "อ. นอกสาขา"
+    },
+    {
+      "id": "i_d38d66d5",
+      "name": "อ. ธรรมรัตน์ + ดร. ฉายรุ่ง"
+    },
+    {
+      "id": "i_757ba573",
+      "name": "Jonathan"
+    },
+    {
+      "id": "i_de51bbaf",
+      "name": "ผศ.ดร. วิชยุทธ"
+    },
+    {
+      "id": "i_91d43703",
+      "name": "ผศ.ดร. วรรณพล"
+    },
+    {
+      "id": "i_13746bb7",
+      "name": "อ. ธีรนาท"
+    }
+  ],
+  "rooms": [
+    {
+      "id": "r1",
+      "name": "ห้องปฏิบัติการฝึกอบรม อาคารโรงงานสาขาคอม",
+      "capacity": 35
+    },
+    {
+      "id": "r2",
+      "name": "ปัญญาประดิษฐ์ประยุกต์ อาคารโรงงานสาขาคอม",
+      "capacity": 40
+    },
+    {
+      "id": "r3",
+      "name": "ห้อง working space อาคารโรงงานสาขาคอม",
+      "capacity": 35
+    },
+    {
+      "id": "r4",
+      "name": "1444 อาคารเรียนและปฏิบัติการเครื่องกล(อาคาร 14)",
+      "capacity": 35
+    },
+    {
+      "id": "r5",
+      "name": "นวัตกรรมระบบอัจฉริยะ อาคารโรงงานสาขาคอม",
+      "capacity": 35
+    },
+    {
+      "id": "r6",
+      "name": "ห้องปฏิบัติการระบบเครือข่าย อาคารโรงงานสาขาคอม",
+      "capacity": 35
+    },
+    {
+      "id": "r7",
+      "name": "411 อาคาร 4",
+      "capacity": 60
+    },
+    {
+      "id": "r8",
+      "name": "EN0122 อาคารสำนักงานคณะ",
+      "capacity": 35
+    },
+    {
+      "id": "r9",
+      "name": "115 อาคาร 1",
+      "capacity": 35
+    },
+    {
+      "id": "r10",
+      "name": "321 (ห้องปฏิบัติการ CAD/CAM 1) อาคาร 3",
+      "capacity": 35
+    },
+    {
+      "id": "r_e4d45bed",
+      "name": "111 อาคาร 1",
+      "capacity": 60
+    },
+    {
+      "id": "r_d64d3b12",
+      "name": "EN0123 LabCom คณะ อาคารสำนักงานคณะ",
+      "capacity": 35
+    },
+    {
+      "id": "r_7eafb730",
+      "name": "Lab1 อาคาร 15",
+      "capacity": 35
+    }
+  ],
+  "meetings": [
+    {
+      "id": "m_8143a4b0",
+      "courseId": "c_bf333e94",
+      "roomId": "r6",
+      "day": "FRI",
+      "start": 13,
+      "end": 15,
+      "type": "ท"
+    },
+    {
+      "id": "m_9e87fb72",
+      "courseId": "c_bf333e94",
+      "roomId": "r6",
+      "day": "FRI",
+      "start": 15,
+      "end": 18,
+      "type": "ป"
+    },
+    {
+      "id": "m_fbe94efe",
+      "courseId": "c_0c6c1567",
+      "roomId": "r7",
+      "day": "TUE",
+      "start": 9,
+      "end": 12,
+      "type": "ท"
+    },
+    {
+      "id": "m_ebf152e2",
+      "courseId": "c_2a8d2779",
+      "roomId": "r2",
+      "day": "TUE",
+      "start": 13,
+      "end": 15,
+      "type": "ท"
+    },
+    {
+      "id": "m_8a31488c",
+      "courseId": "c_2a8d2779",
+      "roomId": "r2",
+      "day": "TUE",
+      "start": 15,
+      "end": 17,
+      "type": "ป"
+    },
+    {
+      "id": "m_d528e63f",
+      "courseId": "c_227e3954",
+      "roomId": "r_d64d3b12",
+      "day": "WED",
+      "start": 8,
+      "end": 10,
+      "type": "ท"
+    },
+    {
+      "id": "m_6f5be138",
+      "courseId": "c_227e3954",
+      "roomId": "r_d64d3b12",
+      "day": "WED",
+      "start": 10,
+      "end": 12,
+      "type": "ป"
+    },
+    {
+      "id": "m_c7b91642",
+      "courseId": "c_bdc6d9a6",
+      "roomId": "r1",
+      "day": "WED",
+      "start": 14,
+      "end": 16,
+      "type": "ท"
+    },
+    {
+      "id": "m_ba1e53fb",
+      "courseId": "c_bdc6d9a6",
+      "roomId": "r1",
+      "day": "WED",
+      "start": 16,
+      "end": 19,
+      "type": "ป"
+    },
+    {
+      "id": "m_36f043a9",
+      "courseId": "c_54f27cef",
+      "roomId": "r7",
+      "day": "THU",
+      "start": 9,
+      "end": 12,
+      "type": "ท"
+    },
+    {
+      "id": "m_26020628",
+      "courseId": "c_27133835",
+      "roomId": "r10",
+      "day": "THU",
+      "start": 13,
+      "end": 15,
+      "type": "ท"
+    },
+    {
+      "id": "m_cc02698d",
+      "courseId": "c_27133835",
+      "roomId": "r10",
+      "day": "THU",
+      "start": 15,
+      "end": 18,
+      "type": "ป"
+    },
+    {
+      "id": "m_3c34f71d",
+      "courseId": "c_2f1509ca",
+      "roomId": "r2",
+      "day": "MON",
+      "start": 9,
+      "end": 10,
+      "type": "ท"
+    },
+    {
+      "id": "m_c1974e34",
+      "courseId": "c_2f1509ca",
+      "roomId": "r2",
+      "day": "MON",
+      "start": 10,
+      "end": 12,
+      "type": "ป"
+    },
+    {
+      "id": "m_f5f7e9dd",
+      "courseId": "c_292dd672",
+      "roomId": "r2",
+      "day": "MON",
+      "start": 13,
+      "end": 15,
+      "type": "ท"
+    },
+    {
+      "id": "m_997108a2",
+      "courseId": "c_292dd672",
+      "roomId": "r2",
+      "day": "MON",
+      "start": 15,
+      "end": 18,
+      "type": "ป"
+    },
+    {
+      "id": "m_ffde5972",
+      "courseId": "c_4d87a64b",
+      "roomId": "r2",
+      "day": "TUE",
+      "start": 13,
+      "end": 15,
+      "type": "ท"
+    },
+    {
+      "id": "m_1494cc41",
+      "courseId": "c_4d87a64b",
+      "roomId": "r2",
+      "day": "TUE",
+      "start": 15,
+      "end": 17,
+      "type": "ป"
+    },
+    {
+      "id": "m_f995594c",
+      "courseId": "c_a884d303",
+      "roomId": "r_7eafb730",
+      "day": "WED",
+      "start": 9,
+      "end": 12,
+      "type": "ท"
+    },
+    {
+      "id": "m_28647e4b",
+      "courseId": "c_d93d6788",
+      "roomId": "r_e4d45bed",
+      "day": "WED",
+      "start": 14,
+      "end": 16,
+      "type": "ท"
+    },
+    {
+      "id": "m_1e1ff0e6",
+      "courseId": "c_d93d6788",
+      "roomId": "r_e4d45bed",
+      "day": "WED",
+      "start": 16,
+      "end": 19,
+      "type": "ป"
+    },
+    {
+      "id": "m_d57dfc46",
+      "courseId": "c_a7501249",
+      "roomId": "r7",
+      "day": "THU",
+      "start": 9,
+      "end": 12,
+      "type": "ท"
+    },
+    {
+      "id": "m_55248ac2",
+      "courseId": "c_0ebd9f45",
+      "roomId": "r10",
+      "day": "THU",
+      "start": 13,
+      "end": 15,
+      "type": "ท"
+    },
+    {
+      "id": "m_509aa558",
+      "courseId": "c_0ebd9f45",
+      "roomId": "r10",
+      "day": "THU",
+      "start": 15,
+      "end": 18,
+      "type": "ป"
+    },
+    {
+      "id": "m_d0eaa564",
+      "courseId": "c_377bb09b",
+      "roomId": "r7",
+      "day": "FRI",
+      "start": 8,
+      "end": 10,
+      "type": "ท"
+    },
+    {
+      "id": "m_92d6be78",
+      "courseId": "c_377bb09b",
+      "roomId": "r7",
+      "day": "FRI",
+      "start": 10,
+      "end": 12,
+      "type": "ป"
+    },
+    {
+      "id": "m_8504a34d",
+      "courseId": "c_fbb6db9c",
+      "roomId": "r1",
+      "day": "FRI",
+      "start": 13,
+      "end": 16,
+      "type": "ป"
+    },
+    {
+      "id": "m_ed524d8d",
+      "courseId": "c_69ff7def",
+      "roomId": "r2",
+      "day": "MON",
+      "start": 9,
+      "end": 10,
+      "type": "ท"
+    },
+    {
+      "id": "m_2ebe80b5",
+      "courseId": "c_d3773119",
+      "roomId": "r2",
+      "day": "MON",
+      "start": 13,
+      "end": 15,
+      "type": "ท"
+    },
+    {
+      "id": "m_23cf6114",
+      "courseId": "c_d3773119",
+      "roomId": "r2",
+      "day": "MON",
+      "start": 15,
+      "end": 18,
+      "type": "ป"
+    },
+    {
+      "id": "m_4588c213",
+      "courseId": "c_7f31bae1",
+      "roomId": "r5",
+      "day": "TUE",
+      "start": 8,
+      "end": 10,
+      "type": "ท"
+    },
+    {
+      "id": "m_8dfe5c31",
+      "courseId": "c_7f31bae1",
+      "roomId": "r5",
+      "day": "TUE",
+      "start": 10,
+      "end": 12,
+      "type": "ป"
+    },
+    {
+      "id": "m_5fe4d46c",
+      "courseId": "c_85c65cff",
+      "roomId": "r5",
+      "day": "WED",
+      "start": 13,
+      "end": 15,
+      "type": "ท"
+    },
+    {
+      "id": "m_07dc7888",
+      "courseId": "c_85c65cff",
+      "roomId": "r5",
+      "day": "WED",
+      "start": 15,
+      "end": 18,
+      "type": "ป"
+    },
+    {
+      "id": "m_0279c573",
+      "courseId": "c_0ce7771b",
+      "roomId": "r_e4d45bed",
+      "day": "THU",
+      "start": 9,
+      "end": 12,
+      "type": "ท"
+    },
+    {
+      "id": "m_fb48dae6",
+      "courseId": "c_9e9ff957",
+      "roomId": "r7",
+      "day": "THU",
+      "start": 13,
+      "end": 16,
+      "type": "ท"
+    },
+    {
+      "id": "m_ae9e0073",
+      "courseId": "c_b48d485c",
+      "roomId": "r7",
+      "day": "FRI",
+      "start": 8,
+      "end": 10,
+      "type": "ท"
+    },
+    {
+      "id": "m_33eee017",
+      "courseId": "c_b48d485c",
+      "roomId": "r7",
+      "day": "FRI",
+      "start": 10,
+      "end": 12,
+      "type": "ป"
+    },
+    {
+      "id": "m_a43bebe1",
+      "courseId": "c_4af93440",
+      "roomId": "r2",
+      "day": "FRI",
+      "start": 13,
+      "end": 16,
+      "type": "ป"
+    },
+    {
+      "id": "m_b8f848da",
+      "courseId": "c_14666c40",
+      "roomId": "r1",
+      "day": "MON",
+      "start": 8,
+      "end": 10,
+      "type": "ท"
+    },
+    {
+      "id": "m_1810beb0",
+      "courseId": "c_14666c40",
+      "roomId": "r1",
+      "day": "MON",
+      "start": 10,
+      "end": 12,
+      "type": "ป"
+    },
+    {
+      "id": "m_30d60aed",
+      "courseId": "c_14666c40",
+      "roomId": "r1",
+      "day": "MON",
+      "start": 13,
+      "end": 14,
+      "type": "ป"
+    },
+    {
+      "id": "m_3b0bcdbb",
+      "courseId": "c_be9892b7",
+      "roomId": "r1",
+      "day": "TUE",
+      "start": 8,
+      "end": 10,
+      "type": "ท"
+    },
+    {
+      "id": "m_e8b03688",
+      "courseId": "c_be9892b7",
+      "roomId": "r1",
+      "day": "TUE",
+      "start": 10,
+      "end": 12,
+      "type": "ป"
+    },
+    {
+      "id": "m_323fae5f",
+      "courseId": "c_b60cc62b",
+      "roomId": "r1",
+      "day": "TUE",
+      "start": 13,
+      "end": 15,
+      "type": "ป"
+    },
+    {
+      "id": "m_b234e298",
+      "courseId": "c_7bc33d5a",
+      "roomId": "r1",
+      "day": "TUE",
+      "start": 15,
+      "end": 18,
+      "type": "ป"
+    },
+    {
+      "id": "m_569c628b",
+      "courseId": "c_e65ed240",
+      "roomId": "r1",
+      "day": "WED",
+      "start": 8,
+      "end": 10,
+      "type": "ท"
+    },
+    {
+      "id": "m_92c311c7",
+      "courseId": "c_e65ed240",
+      "roomId": "r1",
+      "day": "WED",
+      "start": 10,
+      "end": 12,
+      "type": "ป"
+    },
+    {
+      "id": "m_9c9f8d27",
+      "courseId": "c_e669aa11",
+      "roomId": "r2",
+      "day": "WED",
+      "start": 13,
+      "end": 15,
+      "type": "ท"
+    },
+    {
+      "id": "m_694be166",
+      "courseId": "c_e669aa11",
+      "roomId": "r2",
+      "day": "WED",
+      "start": 15,
+      "end": 17,
+      "type": "ป"
+    },
+    {
+      "id": "m_9b4bdf6d",
+      "courseId": "c_b26a1676",
+      "roomId": "r_e4d45bed",
+      "day": "THU",
+      "start": 9,
+      "end": 12,
+      "type": "ท"
+    },
+    {
+      "id": "m_43c49117",
+      "courseId": "c_a06e0796",
+      "roomId": "r5",
+      "day": "THU",
+      "start": 13,
+      "end": 15,
+      "type": "ท"
+    },
+    {
+      "id": "m_a43aacfd",
+      "courseId": "c_a06e0796",
+      "roomId": "r5",
+      "day": "THU",
+      "start": 15,
+      "end": 17,
+      "type": "ป"
+    },
+    {
+      "id": "m_bb8ad352",
+      "courseId": "c_c799ff92",
+      "roomId": "r2",
+      "day": "FRI",
+      "start": 8,
+      "end": 10,
+      "type": "ท"
+    },
+    {
+      "id": "m_ed727c8b",
+      "courseId": "c_c799ff92",
+      "roomId": "r2",
+      "day": "FRI",
+      "start": 10,
+      "end": 12,
+      "type": "ป"
+    },
+    {
+      "id": "m_05c1cf80",
+      "courseId": "c_71cf2c00",
+      "roomId": "r1",
+      "day": "MON",
+      "start": 8,
+      "end": 10,
+      "type": "ท"
+    },
+    {
+      "id": "m_d76d95e4",
+      "courseId": "c_71cf2c00",
+      "roomId": "r1",
+      "day": "MON",
+      "start": 10,
+      "end": 12,
+      "type": "ป"
+    },
+    {
+      "id": "m_6ea8d7b3",
+      "courseId": "c_71cf2c00",
+      "roomId": "r1",
+      "day": "MON",
+      "start": 13,
+      "end": 14,
+      "type": "ป"
+    },
+    {
+      "id": "m_2d0abd7a",
+      "courseId": "c_1abf9c38",
+      "roomId": "r1",
+      "day": "TUE",
+      "start": 8,
+      "end": 10,
+      "type": "ท"
+    },
+    {
+      "id": "m_7861c610",
+      "courseId": "c_1abf9c38",
+      "roomId": "r1",
+      "day": "TUE",
+      "start": 10,
+      "end": 12,
+      "type": "ป"
+    },
+    {
+      "id": "m_1a7097cb",
+      "courseId": "c_b1b4882b",
+      "roomId": "r_7eafb730",
+      "day": "WED",
+      "start": 9,
+      "end": 12,
+      "type": "ท"
+    },
+    {
+      "id": "m_f0c1be0a",
+      "courseId": "c_89111ccd",
+      "roomId": "r2",
+      "day": "WED",
+      "start": 13,
+      "end": 15,
+      "type": "ท"
+    },
+    {
+      "id": "m_ca88534e",
+      "courseId": "c_89111ccd",
+      "roomId": "r2",
+      "day": "WED",
+      "start": 15,
+      "end": 17,
+      "type": "ป"
+    },
+    {
+      "id": "m_c9568b46",
+      "courseId": "c_8fbb328c",
+      "roomId": "r4",
+      "day": "THU",
+      "start": 8,
+      "end": 10,
+      "type": "ท"
+    },
+    {
+      "id": "m_cdd6b8fd",
+      "courseId": "c_8fbb328c",
+      "roomId": "r4",
+      "day": "THU",
+      "start": 10,
+      "end": 12,
+      "type": "ป"
+    },
+    {
+      "id": "m_a70d63d2",
+      "courseId": "c_0ddc6bcd",
+      "roomId": "r2",
+      "day": "FRI",
+      "start": 8,
+      "end": 10,
+      "type": "ท"
+    },
+    {
+      "id": "m_4df44192",
+      "courseId": "c_0ddc6bcd",
+      "roomId": "r2",
+      "day": "FRI",
+      "start": 10,
+      "end": 12,
+      "type": "ป"
+    },
+    {
+      "id": "m_2ea065cb",
+      "courseId": "c_d221b848",
+      "roomId": "r5",
+      "day": "FRI",
+      "start": 13,
+      "end": 16,
+      "type": "ป"
+    },
+    {
+      "id": "m_a4b47941",
+      "courseId": "c_3d1cac0b",
+      "roomId": "r6",
+      "day": "WED",
+      "start": 9,
+      "end": 12,
+      "type": "ป"
+    },
+    {
+      "id": "m_2ff6f93a",
+      "courseId": "c_69ff7def",
+      "roomId": "r2",
+      "day": "MON",
+      "start": 10,
+      "end": 12,
+      "type": "ป"
+    }
+  ],
+  "catalog": [
+    {
+      "id": "GE-010-001",
+      "code": "GE-010-001",
+      "name": "ภาษาอังกฤษง่ายนิดเดียว (English is easy)",
+      "category": "ศึกษาทั่วไป (พื้นฐาน)",
+      "credits": 3,
+      "theoryHours": 3,
+      "practicalHours": 0
+    },
+    {
+      "id": "GE-010-002",
+      "code": "GE-010-002",
+      "name": "ภาษาอังกฤษฟุดฟิดฟอฟัน (English is fun)",
+      "category": "ศึกษาทั่วไป (พื้นฐาน)",
+      "credits": 3,
+      "theoryHours": 3,
+      "practicalHours": 0
+    },
+    {
+      "id": "GE-010-003",
+      "code": "GE-010-003",
+      "name": "ดิจิทัลกับชีวิตวิถีใหม่ (Digital Technology of New Normal)",
+      "category": "ศึกษาทั่วไป (พื้นฐาน)",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2
+    },
+    {
+      "id": "GE-010-004",
+      "code": "GE-010-004",
+      "name": "คุณค่ามหาวิทยาลัยกาฬสินธุ์ (Value of Kalasin University)",
+      "category": "ศึกษาทั่วไป (พื้นฐาน)",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2
+    },
+    {
+      "id": "GE-010-005",
+      "code": "GE-010-005",
+      "name": "ชีวิตออกแบบได้ (Ideal Life)",
+      "category": "ศึกษาทั่วไป (พื้นฐาน)",
+      "credits": 3,
+      "theoryHours": 3,
+      "practicalHours": 0
+    },
+    {
+      "id": "GE-010-006",
+      "code": "GE-010-006",
+      "name": "ปรัชญามนุษย์ สังคมและเศรษฐศาสตร์ (Human philosophy society and economics)",
+      "category": "ศึกษาทั่วไป (พื้นฐาน)",
+      "credits": 3,
+      "theoryHours": 3,
+      "practicalHours": 0
+    },
+    {
+      "id": "GE-020-003",
+      "code": "GE-020-003",
+      "name": "ภาษาไทยเชิงสร้างสรรค์ (Practical Thai for communication)",
+      "category": "ศึกษาทั่วไป (เลือก)",
+      "credits": 3,
+      "theoryHours": 3,
+      "practicalHours": 0
+    },
+    {
+      "id": "GE-020-008",
+      "code": "GE-020-008",
+      "name": "การพัฒนาธุรกิจในสังคมดิจิทัล (Entrepreneur Studies)",
+      "category": "ศึกษาทั่วไป (เลือก)",
+      "credits": 3,
+      "theoryHours": 3,
+      "practicalHours": 0
+    },
+    {
+      "id": "SC-061-103",
+      "code": "SC-061-103",
+      "name": "แคลคูลัสสำหรับวิศวกรรม 1",
+      "category": "วิชาแกน",
+      "credits": 3,
+      "theoryHours": 3,
+      "practicalHours": 0
+    },
+    {
+      "id": "SC-061-104",
+      "code": "SC-061-104",
+      "name": "แคลคูลัสสำหรับวิศวกรรม 2",
+      "category": "วิชาแกน",
+      "credits": 3,
+      "theoryHours": 3,
+      "practicalHours": 0
+    },
+    {
+      "id": "EN-001-001",
+      "code": "EN-001-001",
+      "name": "เขียนแบบวิศวกรรม",
+      "category": "วิชาแกน",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 3
+    },
+    {
+      "id": "EN-001-002",
+      "code": "EN-001-002",
+      "name": "การโปรแกรมคอมพิวเตอร์",
+      "category": "วิชาแกน",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 3
+    },
+    {
+      "id": "EN-001-006",
+      "code": "EN-001-006",
+      "name": "วิศวกรรมไฟฟ้าพื้นฐาน",
+      "category": "วิชาแกน",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 3
+    },
+    {
+      "id": "EN-001-007",
+      "code": "EN-001-007",
+      "name": "ความน่าจะเป็นและสถิติวิศวกรรม",
+      "category": "วิชาแกน",
+      "credits": 3,
+      "theoryHours": 3,
+      "practicalHours": 0
+    },
+    {
+      "id": "EN-001-016",
+      "code": "EN-001-016",
+      "name": "ระบบควบคุมอัตโนมัติ",
+      "category": "วิชาแกน",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2
+    },
+    {
+      "id": "EN-001-017",
+      "code": "EN-001-017",
+      "name": "วิศวกรรมหุ่นยนต์เบื้องต้น",
+      "category": "วิชาแกน",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2
+    },
+    {
+      "id": "EN-001-018",
+      "code": "EN-001-018",
+      "name": "ปฏิบัติการการออกแบบวงจรอิเล็กทรอนิกส์ด้วยคอมพิวเตอร์",
+      "category": "วิชาแกน",
+      "credits": 1,
+      "theoryHours": 0,
+      "practicalHours": 3
+    },
+    {
+      "id": "EN-001-019",
+      "code": "EN-001-019",
+      "name": "แก่นวิศวกรรมคอมพิวเตอร์",
+      "category": "วิชาแกน",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2
+    },
+    {
+      "id": "EN-001-020",
+      "code": "EN-001-020",
+      "name": "การเขียนโปรแกรมและแก้ปัญหา",
+      "category": "วิชาแกน",
+      "credits": 2,
+      "theoryHours": 1,
+      "practicalHours": 2
+    },
+    {
+      "id": "EN-012-101",
+      "code": "EN-012-101",
+      "name": "คณิตศาสตร์ดิสครีต",
+      "category": "วิชาเฉพาะด้าน",
+      "credits": 3,
+      "theoryHours": 3,
+      "practicalHours": 0
+    },
+    {
+      "id": "EN-012-102",
+      "code": "EN-012-102",
+      "name": "อิเล็กทรอนิกส์สำหรับวิศวกรรมคอมพิวเตอร์",
+      "category": "วิชาเฉพาะด้าน",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 3
+    },
+    {
+      "id": "EN-012-103",
+      "code": "EN-012-103",
+      "name": "การสื่อสารข้อมูลและเครือข่ายคอมพิวเตอร์",
+      "category": "วิชาเฉพาะด้าน",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 3
+    },
+    {
+      "id": "EN-012-104",
+      "code": "EN-012-104",
+      "name": "การสัมมนาทางวิศวกรรมคอมพิวเตอร์",
+      "category": "โครงงานและสัมมนา",
+      "credits": 1,
+      "theoryHours": 0,
+      "practicalHours": 3
+    },
+    {
+      "id": "EN-012-205",
+      "code": "EN-012-205",
+      "name": "โครงสร้างข้อมูลและอัลกอริทึม",
+      "category": "วิชาเฉพาะด้าน",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 3
+    },
+    {
+      "id": "EN-012-206",
+      "code": "EN-012-206",
+      "name": "สถาปัตยกรรมและโครงสร้างคอมพิวเตอร์",
+      "category": "วิชาเฉพาะด้าน",
+      "credits": 3,
+      "theoryHours": 3,
+      "practicalHours": 0
+    },
+    {
+      "id": "EN-012-207",
+      "code": "EN-012-207",
+      "name": "ตรรกศาสตร์ของดิจิตอลคอมพิวเตอร์",
+      "category": "วิชาเฉพาะด้าน",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 3
+    },
+    {
+      "id": "EN-012-208",
+      "code": "EN-012-208",
+      "name": "ระบบปฏิบัติการและโปรแกรมระบบ",
+      "category": "วิชาเฉพาะด้าน",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2
+    },
+    {
+      "id": "EN-012-209",
+      "code": "EN-012-209",
+      "name": "การเขียนโปรแกรมคอมพิวเตอร์ขั้นสูง",
+      "category": "วิชาเฉพาะด้าน",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 3
+    },
+    {
+      "id": "EN-012-210",
+      "code": "EN-012-210",
+      "name": "ระบบสมองกลฝังตัว",
+      "category": "วิชาเฉพาะด้าน",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 3
+    },
+    {
+      "id": "EN-012-211",
+      "code": "EN-012-211",
+      "name": "โครงงานวิศวกรรมคอมพิวเตอร์ 1",
+      "category": "โครงงานและสัมมนา",
+      "credits": 1,
+      "theoryHours": 0,
+      "practicalHours": 3
+    },
+    {
+      "id": "EN-012-212",
+      "code": "EN-012-212",
+      "name": "โครงงานวิศวกรรมคอมพิวเตอร์ 2",
+      "category": "โครงงานและสัมมนา",
+      "credits": 1,
+      "theoryHours": 0,
+      "practicalHours": 3
+    },
+    {
+      "id": "EN-012-313",
+      "code": "EN-012-313",
+      "name": "ระบบฐานข้อมูล",
+      "category": "วิชาเฉพาะด้าน",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 3
+    },
+    {
+      "id": "EN-012-314",
+      "code": "EN-012-314",
+      "name": "ปัญญาประดิษฐ์",
+      "category": "วิชาเฉพาะด้าน",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2
+    },
+    {
+      "id": "EN-012-315",
+      "code": "EN-012-315",
+      "name": "วิศวกรรมซอฟต์แวร์",
+      "category": "วิชาเฉพาะด้าน",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2
+    },
+    {
+      "id": "EN-012-316",
+      "code": "EN-012-316",
+      "name": "วิทยาการข้อมูลและการแสดงผลข้อมูล",
+      "category": "วิชาเฉพาะด้าน",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2
+    },
+    {
+      "id": "EN-012-317",
+      "code": "EN-012-317",
+      "name": "โครงงานวิศวกรรมคอมพิวเตอร์ 3",
+      "category": "โครงงานและสัมมนา",
+      "credits": 1,
+      "theoryHours": 0,
+      "practicalHours": 3
+    },
+    {
+      "id": "EN-012-318",
+      "code": "EN-012-318",
+      "name": "โครงงานวิศวกรรมคอมพิวเตอร์ 4",
+      "category": "โครงงานและสัมมนา",
+      "credits": 1,
+      "theoryHours": 0,
+      "practicalHours": 3
+    },
+    {
+      "id": "EN-013-301",
+      "code": "EN-013-301",
+      "name": "ระบบหุ่นยนต์อัตโนมัติในงานอุตสาหกรรม",
+      "category": "วิชาชีพเลือก",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2
+    },
+    {
+      "id": "EN-013-302",
+      "code": "EN-013-302",
+      "name": "ระบบควบคุมและติดตามด้วยคอมพิวเตอร์",
+      "category": "วิชาชีพเลือก",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2
+    },
+    {
+      "id": "EN-013-303",
+      "code": "EN-013-303",
+      "name": "ระบบปัญญาและวิชั่นสำหรับหุ่นยนต์",
+      "category": "วิชาชีพเลือก",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2
+    },
+    {
+      "id": "EN-013-304",
+      "code": "EN-013-304",
+      "name": "ไมโครโพรเซสเซอร์และการเชื่อมต่อใช้งาน",
+      "category": "วิชาชีพเลือก",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2
+    },
+    {
+      "id": "EN-013-305",
+      "code": "EN-013-305",
+      "name": "การพัฒนาระบบคอมพิวเตอร์ฮาร์ดแวร์",
+      "category": "วิชาชีพเลือก",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2
+    },
+    {
+      "id": "EN-013-306",
+      "code": "EN-013-306",
+      "name": "การออกแบบระบบดิจิทัลขั้นสูงด้วยภาษาเอชดีแอล",
+      "category": "วิชาชีพเลือก",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2
+    },
+    {
+      "id": "EN-013-307",
+      "code": "EN-013-307",
+      "name": "ระบบคอมพิวเตอร์ฝังตัวแบบไร้สาย",
+      "category": "วิชาชีพเลือก",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2
+    },
+    {
+      "id": "EN-013-308",
+      "code": "EN-013-308",
+      "name": "อินเทอร์เน็ตของสรรพสิ่ง",
+      "category": "วิชาชีพเลือก",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 3
+    },
+    {
+      "id": "EN-013-309",
+      "code": "EN-013-309",
+      "name": "หัวข้อพิเศษทางด้านหุ่นยนต์และอิเล็กทรอนิกส์อัจฉริยะ",
+      "category": "วิชาชีพเลือก",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2
+    },
+    {
+      "id": "EN-013-310",
+      "code": "EN-013-310",
+      "name": "การเรียนรู้ภาคปฏิบัติด้านหุ่นยนต์และอิเล็กทรอนิกส์อัจฉริยะ",
+      "category": "วิชาชีพเลือก",
+      "credits": 3,
+      "theoryHours": 0,
+      "practicalHours": 40
+    },
+    {
+      "id": "EN-013-311",
+      "code": "EN-013-311",
+      "name": "ระบบเครือข่ายแบบทีซีพีไอพี",
+      "category": "วิชาชีพเลือก",
+      "credits": 3,
+      "theoryHours": 3,
+      "practicalHours": 0
+    },
+    {
+      "id": "EN-013-312",
+      "code": "EN-013-312",
+      "name": "เทคโนโลยีเครือข่ายไร้สาย",
+      "category": "วิชาชีพเลือก",
+      "credits": 3,
+      "theoryHours": 3,
+      "practicalHours": 0
+    },
+    {
+      "id": "EN-013-313",
+      "code": "EN-013-313",
+      "name": "เครือข่ายเซ็นเซอร์ไร้สาย",
+      "category": "วิชาชีพเลือก",
+      "credits": 3,
+      "theoryHours": 3,
+      "practicalHours": 0
+    },
+    {
+      "id": "EN-013-314",
+      "code": "EN-013-314",
+      "name": "การออกแบบและติดตั้งระบบในองค์กร",
+      "category": "วิชาชีพเลือก",
+      "credits": 3,
+      "theoryHours": 3,
+      "practicalHours": 0
+    },
+    {
+      "id": "EN-013-315",
+      "code": "EN-013-315",
+      "name": "ความปลอดภัยเครือข่ายในองค์กร",
+      "category": "วิชาชีพเลือก",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2
+    },
+    {
+      "id": "EN-013-316",
+      "code": "EN-013-316",
+      "name": "การประมวลผลคลาวด์",
+      "category": "วิชาชีพเลือก",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2
+    },
+    {
+      "id": "EN-013-317",
+      "code": "EN-013-317",
+      "name": "การเขียนโปรแกรมบนเครือข่ายคอมพิวเตอร์",
+      "category": "วิชาชีพเลือก",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2
+    },
+    {
+      "id": "EN-013-318",
+      "code": "EN-013-318",
+      "name": "การเขียนโปรแกรมบนระบบยูนิกซ์ขั้นสูง",
+      "category": "วิชาชีพเลือก",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2
+    },
+    {
+      "id": "EN-013-319",
+      "code": "EN-013-319",
+      "name": "หัวข้อพิเศษทางด้านโครงสร้างพื้นฐานและระบบเครือข่าย",
+      "category": "วิชาชีพเลือก",
+      "credits": 3,
+      "theoryHours": 3,
+      "practicalHours": 0
+    },
+    {
+      "id": "EN-013-320",
+      "code": "EN-013-320",
+      "name": "การเรียนรู้ภาคปฏิบัติด้านโครงสร้างพื้นฐานและระบบเครือข่าย",
+      "category": "วิชาชีพเลือก",
+      "credits": 3,
+      "theoryHours": 0,
+      "practicalHours": 40
+    },
+    {
+      "id": "EN-013-321",
+      "code": "EN-013-321",
+      "name": "ข้อมูลขนาดใหญ่",
+      "category": "วิชาชีพเลือก",
+      "credits": 3,
+      "theoryHours": 3,
+      "practicalHours": 0
+    },
+    {
+      "id": "EN-013-322",
+      "code": "EN-013-322",
+      "name": "การทำเหมืองข้อมูล",
+      "category": "วิชาชีพเลือก",
+      "credits": 3,
+      "theoryHours": 3,
+      "practicalHours": 0
+    },
+    {
+      "id": "EN-013-323",
+      "code": "EN-013-323",
+      "name": "การประมวลผลภาพ",
+      "category": "วิชาชีพเลือก",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2
+    },
+    {
+      "id": "EN-013-324",
+      "code": "EN-013-324",
+      "name": "คอมพิวเตอร์กราฟิก",
+      "category": "วิชาชีพเลือก",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2
+    },
+    {
+      "id": "EN-013-325",
+      "code": "EN-013-325",
+      "name": "คอมพิวเตอร์วิชั่น",
+      "category": "วิชาชีพเลือก",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2
+    },
+    {
+      "id": "EN-013-326",
+      "code": "EN-013-326",
+      "name": "การรู้จำรูปแบบ",
+      "category": "วิชาชีพเลือก",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2
+    },
+    {
+      "id": "EN-013-327",
+      "code": "EN-013-327",
+      "name": "การเรียนรู้ของเครื่อง",
+      "category": "วิชาชีพเลือก",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2
+    },
+    {
+      "id": "EN-013-328",
+      "code": "EN-013-328",
+      "name": "การประยุกต์ใช้ปัญญาประดิษฐ์",
+      "category": "วิชาชีพเลือก",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2
+    },
+    {
+      "id": "EN-013-329",
+      "code": "EN-013-329",
+      "name": "หัวข้อพิเศษทางด้านข้อมูลขนาดใหญ่และปัญญาประดิษฐ์",
+      "category": "วิชาชีพเลือก",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2
+    },
+    {
+      "id": "EN-013-330",
+      "code": "EN-013-330",
+      "name": "การเรียนรู้ภาคปฏิบัติด้านข้อมูลขนาดใหญ่และปัญญาประดิษฐ์",
+      "category": "วิชาชีพเลือก",
+      "credits": 3,
+      "theoryHours": 0,
+      "practicalHours": 40
+    },
+    {
+      "id": "EN-013-331",
+      "code": "EN-013-331",
+      "name": "การพัฒนาแอปพลิเคชันบนอุปกรณ์เคลื่อนที่",
+      "category": "วิชาชีพเลือก",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 3
+    },
+    {
+      "id": "EN-013-332",
+      "code": "EN-013-332",
+      "name": "ระบบภูมิศาสตร์สารสนเทศ",
+      "category": "วิชาชีพเลือก",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2
+    },
+    {
+      "id": "EN-013-333",
+      "code": "EN-013-333",
+      "name": "เทคโนโลยีเว็บและแอปพลิเคชัน",
+      "category": "วิชาชีพเลือก",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2
+    },
+    {
+      "id": "EN-013-334",
+      "code": "EN-013-334",
+      "name": "การออกแบบและพัฒนาซอฟต์แวร์",
+      "category": "วิชาชีพเลือก",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2
+    },
+    {
+      "id": "EN-013-335",
+      "code": "EN-013-335",
+      "name": "การวิเคราะห์และออกแบบเชิงวัตถุ",
+      "category": "วิชาชีพเลือก",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2
+    },
+    {
+      "id": "EN-013-336",
+      "code": "EN-013-336",
+      "name": "การวิเคราะห์และออกแบบระบบสารสนเทศ",
+      "category": "วิชาชีพเลือก",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2
+    },
+    {
+      "id": "EN-013-337",
+      "code": "EN-013-337",
+      "name": "การทดสอบซอฟต์แวร์",
+      "category": "วิชาชีพเลือก",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2
+    },
+    {
+      "id": "EN-013-338",
+      "code": "EN-013-338",
+      "name": "การออกแบบการปฏิสัมพันธ์และประสบการณ์ของผู้ใช้",
+      "category": "วิชาชีพเลือก",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2
+    },
+    {
+      "id": "EN-013-339",
+      "code": "EN-013-339",
+      "name": "หัวข้อพิเศษทางด้านการพัฒนาซอฟต์แวร์",
+      "category": "วิชาชีพเลือก",
+      "credits": 3,
+      "theoryHours": 2,
+      "practicalHours": 2
+    },
+    {
+      "id": "EN-013-340",
+      "code": "EN-013-340",
+      "name": "การเรียนรู้ภาคปฏิบัติด้านการพัฒนาซอฟต์แวร์",
+      "category": "วิชาชีพเลือก",
+      "credits": 3,
+      "theoryHours": 0,
+      "practicalHours": 40
+    },
+    {
+      "id": "EN-015-319",
+      "code": "EN-015-319",
+      "name": "การเตรียมสหกิจศึกษา",
+      "category": "ประสบการณ์ภาคสนาม",
+      "credits": 1,
+      "theoryHours": 0,
+      "practicalHours": 2
+    },
+    {
+      "id": "EN-015-420",
+      "code": "EN-015-420",
+      "name": "สหกิจศึกษา",
+      "category": "ประสบการณ์ภาคสนาม",
+      "credits": 6,
+      "theoryHours": 0,
+      "practicalHours": 40
+    }
+  ]
+}
