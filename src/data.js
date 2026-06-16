@@ -20,6 +20,15 @@ export const saveDb = (newDb) => {
   }
 }
 
+export const saveDbSilent = (newDb) => {
+  try {
+    localStorage.setItem('ksu_db', JSON.stringify(newDb));
+    db = newDb; // Update in-memory db
+  } catch (e) {
+    console.error("Failed to save DB", e);
+  }
+}
+
 export { db };
 export const sections = db.sections || [];
 export const instructors = db.instructors || [];
@@ -69,27 +78,24 @@ function getStringHash(str) {
 
 export const getSections = () => db.sections || [];
 
-export const getScheduleForEntity = (viewType, entityId) => {
-  if (!db.courses || !db.meetings) return [];
-
-  // Filter courses based on viewType
-  const relevantCourseIds = db.courses.filter(c => {
-    if (viewType === 'section') return c.sectionId === entityId;
-    if (viewType === 'instructor') return c.instructorIds.includes(entityId);
-    return true; // For room, we filter by meeting later
-  }).map(c => c.id);
+export const getScheduleForEntity = (db, viewType, entityId, customMeetings = null) => {
+  if (!entityId) return [];
   
-  // Filter meetings based on viewType
-  const entityMeetings = db.meetings.filter(m => {
-    if (viewType === 'room') return m.roomId === entityId;
-    if (viewType === 'instructor' || viewType === 'section') {
-      return relevantCourseIds.includes(m.courseId);
-    }
-    return false;
-  });
+  const meetingsToUse = customMeetings || db.meetings;
+
+  let filteredMeetings = [];
+  if (viewType === 'section') {
+    const courseIds = db.courses.filter(c => c.sectionId === entityId).map(c => c.id);
+    filteredMeetings = meetingsToUse.filter(m => courseIds.includes(m.courseId));
+  } else if (viewType === 'instructor') {
+    const courseIds = db.courses.filter(c => c.instructorIds?.includes(entityId)).map(c => c.id);
+    filteredMeetings = meetingsToUse.filter(m => courseIds.includes(m.courseId));
+  } else if (viewType === 'room') {
+    filteredMeetings = meetingsToUse.filter(m => m.roomId === entityId);
+  }
   
   // Map to format suitable for UI
-  return entityMeetings.map(meeting => {
+  return filteredMeetings.map(meeting => {
     const course = db.courses.find(c => c.id === meeting.courseId);
     const room = db.rooms.find(r => r.id === meeting.roomId);
     
@@ -98,8 +104,16 @@ export const getScheduleForEntity = (viewType, entityId) => {
       .map(id => db.instructors.find(i => i.id === id)?.name || 'Unknown')
       .join(', ');
       
-    // Color assignment
-    const colorIndex = getStringHash(course.code) % colors.length;
+    // Color assignment based on meeting type
+    let colorClass;
+    if (meeting.type === 'ป') {
+      colorClass = 'bg-emerald-50/80 text-emerald-800 border-emerald-200/60 shadow-sm backdrop-blur-sm';
+    } else if (meeting.type === 'ท') {
+      colorClass = 'bg-indigo-50/80 text-indigo-800 border-indigo-200/60 shadow-sm backdrop-blur-sm';
+    } else {
+      const colorIndex = getStringHash(course.code) % colors.length;
+      colorClass = colors[colorIndex];
+    }
                     
     const startStr = String(meeting.start).padStart(2, '0');
     const endStr = String(meeting.end).padStart(2, '0');
@@ -107,9 +121,10 @@ export const getScheduleForEntity = (viewType, entityId) => {
     
     const title = `${course.code} ${course.name}
 2: เวลา ${startStr}:00–${endStr}:00 (${durationHours} ชม.)
-3: หน่วยชั่วโมง ท${course.theoryHours} + ป${course.practicalHours}
-4: ห้อง ${room?.name || 'Unknown'}
-5: ผู้สอน ${instructors}`;
+3: ประเภท ${meeting.type || 'ไม่ระบุ'}
+4: หน่วยชั่วโมง ท${course.theoryHours} + ป${course.practicalHours}
+5: ห้อง ${room?.name || 'Unknown'}
+6: ผู้สอน ${instructors}`;
 
     return {
       id: meeting.id,
@@ -121,7 +136,8 @@ export const getScheduleForEntity = (viewType, entityId) => {
       roomName: room?.name || 'Unknown',
       instructorName: instructors,
       sectionName: db.sections.find(s => s.id === course.sectionId)?.name || course.sectionId || 'Unknown',
-      colorClass: colors[colorIndex],
+      colorClass: colorClass,
+      type: meeting.type,
       startHour: meeting.start,
       endHour: meeting.end,
       title: title

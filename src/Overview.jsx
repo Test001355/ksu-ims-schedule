@@ -1,4 +1,4 @@
-﻿import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { clsx } from 'clsx';
 import db from './db.json';
 import { getSections } from './data';
@@ -54,22 +54,22 @@ function Overview({ onEntityClick }) {
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-[#1e4c7c] to-[#3a7ca5] bg-clip-text text-transparent">ภาพรวมตารางสอน</h2>
-          <p className="text-sm text-slate-500 mt-1">ดูตารางคร่าวๆ ของทุกกลุ่มเรียน อาจารย์ หรือห้องเรียน</p>
+          <h2 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-[#1E3A5F] to-[#6B9DC2] bg-clip-text text-transparent">??????????????</h2>
+          <p className="text-sm text-slate-500 mt-1">????????????? ???????????????? ??????? ?????????????</p>
         </div>
         <div className="flex p-1 rounded-xl bg-white/60 backdrop-blur-md shadow-sm border border-slate-200/60">
           <button 
             onClick={() => setViewType('section')}
-            className={clsx("px-4 py-1.5 text-sm font-medium rounded-lg transition-all duration-300", viewType === 'section' ? "bg-white text-[#1e4c7c] shadow-sm" : "text-slate-600 hover:text-slate-900 hover:bg-slate-50/50")}
-          >กลุ่มเรียน</button>
+            className={clsx("px-4 py-1.5 text-sm font-medium rounded-lg transition-all duration-300", viewType === 'section' ? "bg-white text-[#1E3A5F] shadow-sm" : "text-slate-600 hover:text-slate-900 hover:bg-slate-50/50")}
+          >??????????</button>
           <button 
             onClick={() => setViewType('instructor')}
-            className={clsx("px-4 py-1.5 text-sm font-medium rounded-lg transition-all duration-300", viewType === 'instructor' ? "bg-white text-[#1e4c7c] shadow-sm" : "text-slate-600 hover:text-slate-900 hover:bg-slate-50/50")}
-          >อาจารย์ผู้สอน</button>
+            className={clsx("px-4 py-1.5 text-sm font-medium rounded-lg transition-all duration-300", viewType === 'instructor' ? "bg-white text-[#1E3A5F] shadow-sm" : "text-slate-600 hover:text-slate-900 hover:bg-slate-50/50")}
+          >?????????????</button>
           <button 
             onClick={() => setViewType('room')}
-            className={clsx("px-4 py-1.5 text-sm font-medium rounded-lg transition-all duration-300", viewType === 'room' ? "bg-white text-[#1e4c7c] shadow-sm" : "text-slate-600 hover:text-slate-900 hover:bg-slate-50/50")}
-          >ห้องเรียน</button>
+            className={clsx("px-4 py-1.5 text-sm font-medium rounded-lg transition-all duration-300", viewType === 'room' ? "bg-white text-[#1E3A5F] shadow-sm" : "text-slate-600 hover:text-slate-900 hover:bg-slate-50/50")}
+          >?????????</button>
         </div>
       </div>
 
@@ -85,8 +85,8 @@ function Overview({ onEntityClick }) {
               <div className="bg-gradient-to-r from-slate-50/50 to-slate-100/30 p-4 border-b border-slate-100/50 group-hover:from-sky-50/50 group-hover:to-pink-50/50 transition-colors">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="font-semibold text-slate-800 group-hover:text-[#1e4c7c] transition-colors">{entity.name || entity.id}</h3>
-                    <p className="text-xs text-slate-500 mt-1">{schedules.length} คาบสอน</p>
+                    <h3 className="font-semibold text-slate-800 group-hover:text-[#1E3A5F] transition-colors">{entity.name || entity.id}</h3>
+                    <p className="text-xs text-slate-500 mt-1">{schedules.length} ??????</p>
                   </div>
                 </div>
               </div>

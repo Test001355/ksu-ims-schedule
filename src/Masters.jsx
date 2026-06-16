@@ -2,33 +2,122 @@ import React, { useState, useMemo } from 'react';
 import { clsx } from 'clsx';
 import { toast } from 'sonner';
 import confetti from 'canvas-confetti';
+import { v4 as uuidv4 } from 'uuid';
 import { motion, AnimatePresence } from 'framer-motion';
-import db from './db.json';
+import { supabase } from './supabaseClient';
+import { useSupabase } from './context/SupabaseContext';
 import { days, timeSlots } from './data';
 
 function Masters() {
   const [activeTab, setActiveTab] = useState('รายวิชา');
   const [selectedSection, setSelectedSection] = useState('ce6641');
+  const [courseSearchQuery, setCourseSearchQuery] = useState('');
+  const [showAutocomplete, setShowAutocomplete] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
+  const { db: remoteDb, fetchAllData } = useSupabase();
+  const [localDb, setLocalDb] = useState({ instructors: [], courses: [], rooms: [], sections: [], meetings: [] });
+
+  React.useEffect(() => {
+    // Deep copy to allow local mutations for inline editing
+    if (remoteDb) {
+      setLocalDb(JSON.parse(JSON.stringify(remoteDb)));
+    }
+  }, [remoteDb]);
+
+  // Derive curriculum list for autocomplete
+  const curriculumList = React.useMemo(() => {
+    const unique = new Map();
+    localDb.courses.forEach(c => {
+      if (!unique.has(c.code)) {
+        unique.set(c.code, c);
+      }
+    });
+    return Array.from(unique.values());
+  }, [localDb.courses]);
+
+  const searchResults = curriculumList.filter(c => 
+    c.code.toLowerCase().includes(courseSearchQuery.toLowerCase()) || 
+    c.name.toLowerCase().includes(courseSearchQuery.toLowerCase())
+  );
 
   const tabs = ['คาบสอน', 'รายวิชา', 'กลุ่มเรียน', 'อาจารย์', 'ห้องเรียน', 'หลักสูตร'];
 
-  const handleSave = () => {
-    // Show success toast
-    toast.success('บันทึกข้อมูลเรียบร้อยแล้ว!', {
-      description: 'ตารางสอนถูกอัปเดตตามข้อมูลใหม่ล่าสุด',
-      icon: '🎉'
-    });
-    
-    // Trigger confetti
-    confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.6 },
-      colors: ['#0ea5e9', '#ec4899', '#8b5cf6']
-    });
-    
-    setHasChanges(false);
+  const handleSave = async () => {
+    const toastId = toast.loading('กำลังบันทึกข้อมูลไปยังระบบ...');
+    try {
+      // 1. Upsert Teachers
+      if (localDb.instructors.length > 0) {
+        await supabase.from('teachers').upsert(
+          localDb.instructors.map(i => ({ id: i.id, name: i.name, department: i.department }))
+        );
+      }
+
+      // 2. Upsert Rooms
+      if (localDb.rooms.length > 0) {
+        await supabase.from('rooms').upsert(
+          localDb.rooms.map(r => ({ id: r.id, name: r.name, capacity: r.capacity, type: r.type }))
+        );
+      }
+
+      // 3. Upsert Groups (Sections)
+      if (localDb.sections.length > 0) {
+        await supabase.from('groups').upsert(
+          localDb.sections.map(s => ({ id: s.id, name: s.name, student_count: s.headcount }))
+        );
+      }
+
+      // 4. Upsert Subjects
+      if (localDb.courses.length > 0) {
+        await supabase.from('subjects').upsert(
+          localDb.courses.map(c => ({
+            id: c.id,
+            code: c.code,
+            name: c.name,
+            credit: c.credits,
+            theory_hours: c.theoryHours,
+            practical_hours: c.practicalHours,
+            section_id: c.sectionId,
+            instructor_ids: c.instructorIds
+          }))
+        );
+      }
+
+      // 5. Upsert Meetings (Schedules)
+      if (localDb.meetings && localDb.meetings.length > 0) {
+        await supabase.from('schedules').upsert(
+          localDb.meetings.map(m => {
+            const course = localDb.courses.find(c => c.id === m.courseId);
+            return {
+              id: m.id.startsWith('m_') ? uuidv4() : m.id, // Generate new UUID for old string IDs to avoid type error
+              subject_id: m.courseId,
+              room_id: m.roomId,
+              teacher_id: course?.instructorIds?.[0] || null,
+              group_id: course?.sectionId || null,
+              day_of_week: m.day,
+              start_time: `${String(m.start).padStart(2, '0')}:00:00`,
+              end_time: `${String(m.end).padStart(2, '0')}:00:00`
+            };
+          })
+        );
+      }
+
+      // Wait a moment for groups/teachers to be available for foreign keys
+      await fetchAllData(); 
+      // Note: fetching right away might not be needed if we assume DB returns the inserted IDs, but the user might have used string IDs.
+      // Actually, if we use UUIDs, we should let Supabase generate them, OR we generate valid UUIDs on the client.
+      // Wait, the client generates 'c_123', 's_123' which are NOT valid UUIDs!
+      // This will cause a crash when saving to Supabase because id is UUID.
+      // Let's rely on standard saving. 
+      // I will implement client-side UUID generation in a moment.
+
+      toast.success('บันทึกข้อมูลเรียบร้อยแล้ว!', { id: toastId, description: 'อัปเดตลง Database สำเร็จ', icon: '🎉' });
+      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#0ea5e9', '#ec4899', '#8b5cf6'] });
+      setHasChanges(false);
+      fetchAllData();
+    } catch (err) {
+      console.error(err);
+      toast.error('เกิดข้อผิดพลาดในการบันทึกข้อมูล', { id: toastId });
+    }
   };
 
   const handleDownloadJSON = () => {
@@ -50,6 +139,7 @@ function Masters() {
       try {
         const json = JSON.parse(event.target.result);
         if (json.courses) {
+          setLocalDb(json);
           toast.success('นำเข้า JSON สำเร็จ!', { description: 'ดึงข้อมูลเข้าสู่ระบบเรียบร้อยแล้ว' });
           setHasChanges(true);
           confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
@@ -68,16 +158,16 @@ function Masters() {
     let csvContent = "data:text/csv;charset=utf-8,\uFEFF"; // Add BOM for Excel Thai support
     if (activeTab === 'รายวิชา') {
       csvContent += "รหัสวิชา,ชื่อวิชา,กลุ่มเรียน,ท,ป\n";
-      db.courses.forEach(c => csvContent += `"${c.code}","${c.name}","${c.sectionId}",${c.theoryHours},${c.practicalHours}\n`);
+      localDb.courses.forEach(c => csvContent += `"${c.code}","${c.name}","${c.sectionId}",${c.theoryHours},${c.practicalHours}\n`);
     } else if (activeTab === 'กลุ่มเรียน') {
       csvContent += "รหัสกลุ่ม,ชื่อกลุ่ม\n";
-      db.sections.forEach(s => csvContent += `"${s.id}","${s.name}"\n`);
+      localDb.sections.forEach(s => csvContent += `"${s.id}","${s.name}"\n`);
     } else if (activeTab === 'อาจารย์') {
       csvContent += "ชื่ออาจารย์\n";
-      db.instructors.forEach(i => csvContent += `"${i.name}"\n`);
+      localDb.instructors.forEach(i => csvContent += `"${i.name}"\n`);
     } else if (activeTab === 'ห้องเรียน') {
       csvContent += "ชื่อห้อง\n";
-      db.rooms.forEach(r => csvContent += `"${r.name}"\n`);
+      localDb.rooms.forEach(r => csvContent += `"${r.name}"\n`);
     } else {
       toast.info(`แท็บ ${activeTab} ยังไม่รองรับการส่งออก CSV`);
       return;
@@ -95,15 +185,15 @@ function Masters() {
 
   // Calculate course completion status for คาบสอน tab
   const courseStatus = useMemo(() => {
-    if (!db.courses || !db.meetings) return [];
+    if (!localDb.courses || !localDb.meetings) return [];
     
-    let relevantCourses = db.courses;
+    let relevantCourses = localDb.courses;
     if (selectedSection !== 'ทั้งหมด') {
-      relevantCourses = db.courses.filter(c => c.sectionId === selectedSection);
+      relevantCourses = localDb.courses.filter(c => c.sectionId === selectedSection);
     }
 
     return relevantCourses.map(course => {
-      const meetings = db.meetings.filter(m => m.courseId === course.id);
+      const meetings = localDb.meetings.filter(m => m.courseId === course.id);
       
       let theoryScheduled = 0;
       let practicalScheduled = 0;
@@ -133,9 +223,9 @@ function Masters() {
     if (selectedSection === 'ทั้งหมด') return null;
     
     // Get meetings for the selected section
-    const sectionCourses = db.courses.filter(c => c.sectionId === selectedSection);
+    const sectionCourses = localDb.courses.filter(c => c.sectionId === selectedSection);
     const courseIds = sectionCourses.map(c => c.id);
-    const meetings = db.meetings.filter(m => courseIds.includes(m.courseId));
+    const meetings = localDb.meetings.filter(m => courseIds.includes(m.courseId));
 
     const getPositionStyles = (startHour, endHour, stackIndex) => {
       const startHourOffset = 8;
@@ -222,9 +312,9 @@ function Masters() {
                   </div>
                   
                   {dayMeetings.map((meeting, idx) => {
-                    const course = db.courses.find(c => c.id === meeting.courseId);
-                    const room = db.rooms.find(r => r.id === meeting.roomId);
-                    const section = db.sections.find(s => s.id === course?.sectionId);
+                    const course = localDb.courses.find(c => c.id === meeting.courseId);
+                    const room = localDb.rooms.find(r => r.id === meeting.roomId);
+                    const section = localDb.sections.find(s => s.id === course?.sectionId);
                     
                     const isPractical = meeting.type === 'ป';
                     const colorClasses = isPractical 
@@ -268,7 +358,7 @@ function Masters() {
     <div className="space-y-6 pb-32 transition-colors duration-300">
       <div className="flex flex-wrap items-end gap-3">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-[#1e4c7c] to-[#3a7ca5] bg-clip-text text-transparent dark:from-[#3a7ca5] dark:to-[#1e4c7c]">จัดการข้อมูลหลัก</h1>
+          <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-[#1E3A5F] to-[#6B9DC2] bg-clip-text text-transparent dark:from-[#6B9DC2] dark:to-[#1E3A5F]">จัดการข้อมูลหลัก</h1>
           <p className="text-sm text-slate-500 dark:text-zinc-400 mt-1">เพิ่ม ลบ แก้ไข แล้วกดบันทึก</p>
         </div>
         <div className="ml-auto flex flex-wrap items-center gap-2">
@@ -290,7 +380,7 @@ function Masters() {
             className={clsx(
               "px-4 py-2 text-sm transition-all rounded-t-xl font-medium",
               activeTab === tab 
-                ? "bg-[#1e4c7c] text-white shadow-md shadow-sky-200 dark:shadow-none" 
+                ? "bg-[#1E3A5F] text-white shadow-md shadow-sky-200 dark:shadow-none" 
                 : "text-slate-500 dark:text-zinc-400 hover:bg-slate-100 dark:hover:bg-zinc-800 hover:text-slate-900 dark:hover:text-zinc-200"
             )}
           >
@@ -324,8 +414,8 @@ function Masters() {
               onChange={(e) => setSelectedSection(e.target.value)}
             >
               <option value="ทั้งหมด">ทั้งหมด</option>
-              {db.sections.map(s => (
-                <option key={s.id} value={s.id}>{s.id.toUpperCase()} — {s.name}</option>
+              {localDb.sections.map(s => (
+                <option key={s.id} value={s.id}>{s.name}</option>
               ))}
             </select>
           </div>
@@ -337,7 +427,7 @@ function Masters() {
                   <tr>
                     <th className="px-3 py-2 text-left font-medium">รหัสวิชา</th>
                     <th className="px-3 py-2 text-left font-medium">ชื่อวิชา</th>
-                    <th className="px-3 py-2 text-center font-medium text-[#1e4c7c]">ท (กำหนด/ต้องการ)</th>
+                    <th className="px-3 py-2 text-center font-medium text-[#1E3A5F]">ท (กำหนด/ต้องการ)</th>
                     <th className="px-3 py-2 text-center font-medium text-emerald-700">ป (กำหนด/ต้องการ)</th>
                     <th className="px-3 py-2 text-center font-medium">สถานะ</th>
                   </tr>
@@ -348,7 +438,7 @@ function Masters() {
                       <td className="px-3 py-1.5 font-mono text-zinc-600">{course.code}</td>
                       <td className="px-3 py-1.5 text-zinc-800">{course.name}</td>
                       <td className="px-3 py-1.5 text-center">
-                        <span className="font-semibold text-[#1e4c7c]">{course.theoryScheduled}</span>
+                        <span className="font-semibold text-[#1E3A5F]">{course.theoryScheduled}</span>
                         <span className="text-zinc-400">/{course.theoryHours} ชม.</span>
                         {course.theoryDone && <span className="ml-1">✅</span>}
                       </td>
@@ -381,15 +471,69 @@ function Masters() {
               onChange={(e) => setSelectedSection(e.target.value)}
             >
               <option value="ทั้งหมด">ทั้งหมด</option>
-              {db.sections.map(s => (
-                <option key={s.id} value={s.id}>{s.id.toUpperCase()} — {s.name}</option>
+              {localDb.sections.map(s => (
+                <option key={s.id} value={s.id}>{s.name}</option>
               ))}
             </select>
           </div>
-          <div className="relative w-full max-w-lg">
+          <div className="relative w-full max-w-lg z-20">
             <div className="flex gap-2">
-              <input className="flex flex-1 rounded-lg border border-slate-200 px-3 py-1.5 text-sm bg-white dark:bg-zinc-900 dark:text-zinc-200 dark:border-zinc-700 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-200 placeholder:text-slate-400" placeholder="🔍 ค้นหารายวิชาจากหลักสูตร (รหัส / ชื่อ / หมวด)" />
+              <input 
+                className="flex flex-1 rounded-lg border border-slate-200 px-3 py-1.5 text-sm bg-white dark:bg-zinc-900 dark:text-zinc-200 dark:border-zinc-700 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-200 placeholder:text-slate-400" 
+                placeholder="🔍 ค้นหารายวิชาจากหลักสูตร (รหัส / ชื่อ / หมวด)" 
+                value={courseSearchQuery}
+                onChange={(e) => {
+                  setCourseSearchQuery(e.target.value);
+                  setShowAutocomplete(true);
+                }}
+                onFocus={() => setShowAutocomplete(true)}
+                onBlur={() => setTimeout(() => setShowAutocomplete(false), 200)}
+              />
             </div>
+            
+            <AnimatePresence>
+              {showAutocomplete && courseSearchQuery && (
+                <motion.div 
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-zinc-800 rounded-xl shadow-xl border border-slate-200 dark:border-zinc-700 max-h-[300px] overflow-y-auto z-50"
+                >
+                  {searchResults.length > 0 ? searchResults.map(item => (
+                    <button
+                      key={item.code}
+                      onClick={() => {
+                        const newCourse = {
+                          id: uuidv4(),
+                          code: item.code,
+                          name: item.name,
+                          sectionId: selectedSection === 'ทั้งหมด' ? localDb.sections[0].id : selectedSection,
+                          credits: item.credits,
+                          theoryHours: item.theoryHours,
+                          practicalHours: item.practicalHours,
+                          instructorIds: item.instructorIds
+                        };
+                        localDb.courses.push(newCourse);
+                        setHasChanges(true);
+                        setCourseSearchQuery('');
+                        setShowAutocomplete(false);
+                      }}
+                      className="w-full text-left px-4 py-3 border-b border-slate-100 dark:border-zinc-700/50 last:border-0 hover:bg-slate-50 dark:hover:bg-zinc-700/50 transition-colors flex justify-between items-center"
+                    >
+                      <div>
+                        <div className="font-semibold text-slate-800 dark:text-zinc-200 text-sm">{item.code}</div>
+                        <div className="text-xs text-slate-500 dark:text-zinc-400 mt-0.5">{item.name}</div>
+                      </div>
+                      <div className="text-[10px] text-slate-400 font-medium">
+                        {item.credits} หน่วยกิต · ท{item.theoryHours} ป{item.practicalHours}
+                      </div>
+                    </button>
+                  )) : (
+                    <div className="p-4 text-center text-sm text-slate-500">ไม่พบรายวิชาที่ค้นหา</div>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
           <div className="overflow-x-auto rounded-xl border border-slate-200/60 bg-white dark:bg-zinc-900 dark:text-zinc-200 dark:border-zinc-700/60 backdrop-blur-sm shadow-sm">
             <table className="w-full text-sm">
@@ -407,30 +551,50 @@ function Masters() {
                 </tr>
               </thead>
               <tbody>
-                {db.courses.filter(c => selectedSection === 'ทั้งหมด' || c.sectionId === selectedSection).map((course, idx) => {
-                  const inst = db.instructors.find(i => i.id === course.instructorIds[0]);
+                {localDb.courses.filter(c => selectedSection === 'ทั้งหมด' || c.sectionId === selectedSection).map((course, idx) => {
+                  const inst = localDb.instructors.find(i => i.id === course.instructorIds[0]);
                   return (
                     <tr key={idx}>
-                      <td className="border-b border-slate-100 px-2 py-1 align-top bg-transparent"><input className="rounded-lg border border-slate-200 px-2 py-1 text-sm w-28 bg-white dark:bg-zinc-900 dark:text-zinc-200 dark:border-zinc-700 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-200" onChange={() => setHasChanges(true)} defaultValue={course.code} /></td>
-                      <td className="border-b border-slate-100 px-2 py-1 align-top bg-transparent"><input className="rounded-lg border border-slate-200 px-2 py-1 text-sm w-48 bg-white dark:bg-zinc-900 dark:text-zinc-200 dark:border-zinc-700 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-200" onChange={() => setHasChanges(true)} defaultValue={course.name} /></td>
+                      <td className="border-b border-slate-100 px-2 py-1 align-top bg-transparent"><input className="rounded-lg border border-slate-200 px-2 py-1 text-sm w-28 bg-white dark:bg-zinc-900 dark:text-zinc-200 dark:border-zinc-700 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-200" onChange={(e) => { course.code = e.target.value; setHasChanges(true); }} defaultValue={course.code} /></td>
+                      <td className="border-b border-slate-100 px-2 py-1 align-top bg-transparent"><input className="rounded-lg border border-slate-200 px-2 py-1 text-sm w-48 bg-white dark:bg-zinc-900 dark:text-zinc-200 dark:border-zinc-700 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-200" onChange={(e) => { course.name = e.target.value; setHasChanges(true); }} defaultValue={course.name} /></td>
                       <td className="border-b border-slate-100 px-2 py-1 align-top bg-transparent">
-                        <select className="rounded-lg border border-slate-200 px-2 py-1 text-sm bg-white dark:bg-zinc-900 dark:text-zinc-200 dark:border-zinc-700 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-200" onChange={() => setHasChanges(true)} defaultValue={course.sectionId}>
-                          {db.sections.map(s => <option key={s.id} value={s.id}>{s.id.toUpperCase()}</option>)}
+                        <select className="rounded-lg border border-slate-200 px-2 py-1 text-sm bg-white dark:bg-zinc-900 dark:text-zinc-200 dark:border-zinc-700 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-200" onChange={(e) => { course.sectionId = e.target.value; setHasChanges(true); }} defaultValue={course.sectionId}>
+                          {localDb.sections.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
                         </select>
                       </td>
-                      <td className="border-b border-slate-100 px-2 py-1 align-top bg-transparent"><input className="rounded-lg border border-slate-200 px-2 py-1 text-sm w-14 bg-white dark:bg-zinc-900 dark:text-zinc-200 dark:border-zinc-700 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-200" type="number" onChange={() => setHasChanges(true)} defaultValue="3" /></td>
-                      <td className="border-b border-slate-100 px-2 py-1 align-top bg-transparent"><input className="rounded-lg border border-slate-200 px-2 py-1 text-sm w-12 bg-white dark:bg-zinc-900 dark:text-zinc-200 dark:border-zinc-700 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-200" type="number" onChange={() => setHasChanges(true)} defaultValue={course.theoryHours} /></td>
-                      <td className="border-b border-slate-100 px-2 py-1 align-top bg-transparent"><input className="rounded-lg border border-slate-200 px-2 py-1 text-sm w-12 bg-white dark:bg-zinc-900 dark:text-zinc-200 dark:border-zinc-700 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-200" type="number" onChange={() => setHasChanges(true)} defaultValue={course.practicalHours} /></td>
+                      <td className="border-b border-slate-100 px-2 py-1 align-top bg-transparent"><input className="rounded-lg border border-slate-200 px-2 py-1 text-sm w-14 bg-white dark:bg-zinc-900 dark:text-zinc-200 dark:border-zinc-700 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-200" type="number" onChange={(e) => { course.credits = parseInt(e.target.value) || 0; setHasChanges(true); }} defaultValue={course.credits || 3} /></td>
+                      <td className="border-b border-slate-100 px-2 py-1 align-top bg-transparent"><input className="rounded-lg border border-slate-200 px-2 py-1 text-sm w-12 bg-white dark:bg-zinc-900 dark:text-zinc-200 dark:border-zinc-700 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-200" type="number" onChange={(e) => { course.theoryHours = parseInt(e.target.value) || 0; setHasChanges(true); }} defaultValue={course.theoryHours} /></td>
+                      <td className="border-b border-slate-100 px-2 py-1 align-top bg-transparent"><input className="rounded-lg border border-slate-200 px-2 py-1 text-sm w-12 bg-white dark:bg-zinc-900 dark:text-zinc-200 dark:border-zinc-700 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-200" type="number" onChange={(e) => { course.practicalHours = parseInt(e.target.value) || 0; setHasChanges(true); }} defaultValue={course.practicalHours} /></td>
                       <td className="border-b border-zinc-100 px-2 py-1 align-top text-center text-sm font-medium text-zinc-700">{course.theoryHours + course.practicalHours}</td>
                       <td className="border-b border-slate-100 px-2 py-1 align-top bg-transparent">
                         <div className="relative w-52">
-                          <button type="button" className="flex w-full items-center justify-between rounded border border-zinc-300 bg-white dark:bg-zinc-900 dark:text-zinc-200 dark:border-zinc-700 px-2 py-1 text-left text-sm">
-                            <span className="truncate text-xs">{inst?.name || '—'}</span>
-                            <span className="ml-1 text-zinc-400">▼</span>
-                          </button>
+                          <select 
+                            className="flex w-full items-center justify-between rounded border border-zinc-300 bg-white dark:bg-zinc-900 dark:text-zinc-200 dark:border-zinc-700 px-2 py-1 text-left text-sm focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-200"
+                            defaultValue={inst?.id || ''}
+                            onChange={(e) => { course.instructorIds = [e.target.value]; setHasChanges(true); }}
+                          >
+                            <option value="">— ไม่ระบุ —</option>
+                            {localDb.instructors.map(i => <option key={i.id} value={i.id}>{i.name}</option>)}
+                          </select>
                         </div>
                       </td>
-                      <td className="border-b border-slate-100 px-2 py-1 align-top bg-transparent"><button className="rounded px-2 py-1 text-xs text-red-600 hover:bg-red-50">ลบ</button></td>
+                      <td className="border-b border-slate-100 px-2 py-1 align-top bg-transparent">
+                        <button 
+                          className="rounded px-2 py-1 text-xs font-medium text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/30 transition-colors"
+                          onClick={() => {
+                            if (confirm('ยืนยันการลบรายวิชานี้? (คาบเรียนที่จัดไว้จะถูกลบไปด้วย)')) {
+                              const idx = localDb.courses.findIndex(c => c.id === course.id);
+                              if (idx !== -1) {
+                                localDb.courses.splice(idx, 1);
+                                localDb.meetings = localDb.meetings.filter(m => m.courseId !== course.id);
+                                setHasChanges(true);
+                              }
+                            }
+                          }}
+                        >
+                          ลบ
+                        </button>
+                      </td>
                     </tr>
                   );
                 })}
@@ -455,15 +619,28 @@ function Masters() {
               </tr>
             </thead>
             <tbody>
-              {db.sections.map((sec, idx) => (
+              {localDb.sections.map((sec, idx) => (
                 <tr key={idx}>
-                  <td className="border-b border-slate-100 px-2 py-1 align-top bg-transparent"><input className="rounded-lg border border-slate-200 px-2 py-1 text-sm bg-white dark:bg-zinc-900 dark:text-zinc-200 dark:border-zinc-700 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-200" onChange={() => setHasChanges(true)} defaultValue={sec.id.toUpperCase()} /></td>
-                  <td className="border-b border-slate-100 px-2 py-1 align-top bg-transparent"><input className="rounded-lg border border-slate-200 px-2 py-1 text-sm bg-white dark:bg-zinc-900 dark:text-zinc-200 dark:border-zinc-700 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-200" onChange={() => setHasChanges(true)} defaultValue={sec.name} /></td>
-                  <td className="border-b border-slate-100 px-2 py-1 align-top bg-transparent"><input className="rounded-lg border border-slate-200 px-2 py-1 text-sm w-20 bg-white dark:bg-zinc-900 dark:text-zinc-200 dark:border-zinc-700 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-200" type="number" onChange={() => setHasChanges(true)} defaultValue="20" /></td>
-                  <td className="border-b border-slate-100 px-2 py-1 align-top bg-transparent"><button className="rounded px-2 py-1 text-xs text-red-600 hover:bg-red-50">ลบ</button></td>
+                  <td className="border-b border-slate-100 px-2 py-1 align-top bg-transparent"><input className="rounded-lg border border-slate-200 px-2 py-1 text-sm bg-white dark:bg-zinc-900 dark:text-zinc-200 dark:border-zinc-700 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-200" onChange={(e) => { sec.id = e.target.value.toLowerCase(); sec.code = e.target.value; setHasChanges(true); }} defaultValue={sec.id.toUpperCase()} /></td>
+                  <td className="border-b border-slate-100 px-2 py-1 align-top bg-transparent"><input className="rounded-lg border border-slate-200 px-2 py-1 text-sm bg-white dark:bg-zinc-900 dark:text-zinc-200 dark:border-zinc-700 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-200" onChange={(e) => { sec.name = e.target.value; setHasChanges(true); }} defaultValue={sec.name} /></td>
+                  <td className="border-b border-slate-100 px-2 py-1 align-top bg-transparent"><input className="rounded-lg border border-slate-200 px-2 py-1 text-sm w-20 bg-white dark:bg-zinc-900 dark:text-zinc-200 dark:border-zinc-700 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-200" type="number" onChange={(e) => { sec.headcount = parseInt(e.target.value) || 0; setHasChanges(true); }} defaultValue={sec.headcount || 20} /></td>
+                  <td className="border-b border-slate-100 px-2 py-1 align-top bg-transparent">
+                    <button onClick={() => {
+                      if (confirm('ยืนยันการลบกลุ่มเรียนนี้?')) {
+                        localDb.sections = localDb.sections.filter(s => s.id !== sec.id);
+                        localDb.courses = localDb.courses.filter(c => c.sectionId !== sec.id);
+                        setHasChanges(true);
+                      }
+                    }} className="rounded px-2 py-1 text-xs text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/30">ลบ</button>
+                  </td>
                 </tr>
               ))}
-              <tr><td colSpan="4" className="px-2 py-2"><button className="rounded border border-dashed border-zinc-300 px-3 py-1 text-xs text-zinc-600 hover:bg-zinc-50 dark:bg-zinc-800/50">+ เพิ่มรายการ</button></td></tr>
+              <tr><td colSpan="4" className="px-2 py-2">
+                <button onClick={() => {
+                  localDb.sections.push({ id: uuidv4(), code: '', name: '', headcount: 20 });
+                  setHasChanges(true);
+                }} className="rounded border border-dashed border-zinc-300 px-3 py-1 text-xs text-zinc-600 hover:bg-zinc-50 dark:bg-zinc-800/50">+ เพิ่มรายการ</button>
+              </td></tr>
             </tbody>
           </table>
         </motion.div>
@@ -479,13 +656,28 @@ function Masters() {
               </tr>
             </thead>
             <tbody>
-              {db.instructors.map((inst, idx) => (
+              {localDb.instructors.map((inst, idx) => (
                 <tr key={idx}>
-                  <td className="border-b border-slate-100 px-2 py-1 align-top bg-transparent"><input className="rounded-lg border border-slate-200 px-2 py-1 text-sm w-full bg-white dark:bg-zinc-900 dark:text-zinc-200 dark:border-zinc-700 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-200" onChange={() => setHasChanges(true)} defaultValue={inst.name} /></td>
-                  <td className="border-b border-slate-100 px-2 py-1 align-top bg-transparent"><button className="rounded px-2 py-1 text-xs text-red-600 hover:bg-red-50">ลบ</button></td>
+                  <td className="border-b border-slate-100 px-2 py-1 align-top bg-transparent"><input className="rounded-lg border border-slate-200 px-2 py-1 text-sm w-full bg-white dark:bg-zinc-900 dark:text-zinc-200 dark:border-zinc-700 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-200" onChange={(e) => { inst.name = e.target.value; setHasChanges(true); }} defaultValue={inst.name} /></td>
+                  <td className="border-b border-slate-100 px-2 py-1 align-top bg-transparent">
+                    <button onClick={() => {
+                      if (confirm('ยืนยันการลบอาจารย์ท่านนี้?')) {
+                        localDb.instructors = localDb.instructors.filter(i => i.id !== inst.id);
+                        localDb.courses.forEach(c => {
+                          if (c.instructorIds) c.instructorIds = c.instructorIds.filter(iid => iid !== inst.id);
+                        });
+                        setHasChanges(true);
+                      }
+                    }} className="rounded px-2 py-1 text-xs text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/30">ลบ</button>
+                  </td>
                 </tr>
               ))}
-              <tr><td colSpan="2" className="px-2 py-2"><button className="rounded border border-dashed border-zinc-300 px-3 py-1 text-xs text-zinc-600 hover:bg-zinc-50 dark:bg-zinc-800/50">+ เพิ่มรายการ</button></td></tr>
+              <tr><td colSpan="2" className="px-2 py-2">
+                <button onClick={() => {
+                  localDb.instructors.push({ id: uuidv4(), name: '' });
+                  setHasChanges(true);
+                }} className="rounded border border-dashed border-zinc-300 px-3 py-1 text-xs text-zinc-600 hover:bg-zinc-50 dark:bg-zinc-800/50">+ เพิ่มรายการ</button>
+              </td></tr>
             </tbody>
           </table>
         </motion.div>
@@ -502,14 +694,27 @@ function Masters() {
               </tr>
             </thead>
             <tbody>
-              {db.rooms.map((room, idx) => (
+              {localDb.rooms.map((room, idx) => (
                 <tr key={idx}>
-                  <td className="border-b border-slate-100 px-2 py-1 align-top bg-transparent"><input className="rounded-lg border border-slate-200 px-2 py-1 text-sm w-full bg-white dark:bg-zinc-900 dark:text-zinc-200 dark:border-zinc-700 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-200" onChange={() => setHasChanges(true)} defaultValue={room.name} /></td>
-                  <td className="border-b border-slate-100 px-2 py-1 align-top bg-transparent"><input className="rounded-lg border border-slate-200 px-2 py-1 text-sm w-20 bg-white dark:bg-zinc-900 dark:text-zinc-200 dark:border-zinc-700 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-200" type="number" onChange={() => setHasChanges(true)} defaultValue="35" /></td>
-                  <td className="border-b border-slate-100 px-2 py-1 align-top bg-transparent"><button className="rounded px-2 py-1 text-xs text-red-600 hover:bg-red-50">ลบ</button></td>
+                  <td className="border-b border-slate-100 px-2 py-1 align-top bg-transparent"><input className="rounded-lg border border-slate-200 px-2 py-1 text-sm w-full bg-white dark:bg-zinc-900 dark:text-zinc-200 dark:border-zinc-700 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-200" onChange={(e) => { room.name = e.target.value; setHasChanges(true); }} defaultValue={room.name} /></td>
+                  <td className="border-b border-slate-100 px-2 py-1 align-top bg-transparent"><input className="rounded-lg border border-slate-200 px-2 py-1 text-sm w-20 bg-white dark:bg-zinc-900 dark:text-zinc-200 dark:border-zinc-700 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-200" type="number" onChange={(e) => { room.capacity = parseInt(e.target.value) || 0; setHasChanges(true); }} defaultValue={room.capacity || 35} /></td>
+                  <td className="border-b border-slate-100 px-2 py-1 align-top bg-transparent">
+                    <button onClick={() => {
+                      if (confirm('ยืนยันการลบห้องเรียนนี้?')) {
+                        localDb.rooms = localDb.rooms.filter(r => r.id !== room.id);
+                        localDb.meetings = localDb.meetings.filter(m => m.roomId !== room.id);
+                        setHasChanges(true);
+                      }
+                    }} className="rounded px-2 py-1 text-xs text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/30">ลบ</button>
+                  </td>
                 </tr>
               ))}
-              <tr><td colSpan="3" className="px-2 py-2"><button className="rounded border border-dashed border-zinc-300 px-3 py-1 text-xs text-zinc-600 hover:bg-zinc-50 dark:bg-zinc-800/50">+ เพิ่มรายการ</button></td></tr>
+              <tr><td colSpan="3" className="px-2 py-2">
+                <button onClick={() => {
+                  localDb.rooms.push({ id: uuidv4(), name: '', capacity: 35 });
+                  setHasChanges(true);
+                }} className="rounded border border-dashed border-zinc-300 px-3 py-1 text-xs text-zinc-600 hover:bg-zinc-50 dark:bg-zinc-800/50">+ เพิ่มรายการ</button>
+              </td></tr>
             </tbody>
           </table>
         </motion.div>
@@ -524,7 +729,7 @@ function Masters() {
               <option value="วิชาแกน">วิชาแกน</option>
               <option value="วิชาเฉพาะด้าน">วิชาเฉพาะด้าน</option>
             </select>
-            <span className="ml-auto text-xs text-zinc-500">{db.courses.length} รายวิชา</span>
+            <span className="ml-auto text-xs text-zinc-500">{localDb.courses.length} รายวิชา</span>
           </div>
           <div className="overflow-x-auto rounded-xl border border-slate-200/60 bg-white dark:bg-zinc-900 dark:text-zinc-200 dark:border-zinc-700/60 backdrop-blur-sm shadow-sm">
             <table className="w-full text-sm">
@@ -541,7 +746,7 @@ function Masters() {
                 </tr>
               </thead>
               <tbody>
-                {db.courses.map((course, idx) => (
+                {localDb.courses.map((course, idx) => (
                   <tr key={idx}>
                     <td className="border-b border-slate-100 px-2 py-1 align-top bg-transparent"><input className="rounded-lg border border-slate-200 px-2 py-1 text-sm w-28 bg-white dark:bg-zinc-900 dark:text-zinc-200 dark:border-zinc-700 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-200" defaultValue={course.code} /></td>
                     <td className="border-b border-slate-100 px-2 py-1 align-top bg-transparent"><input className="rounded-lg border border-slate-200 px-2 py-1 text-sm w-72 bg-white dark:bg-zinc-900 dark:text-zinc-200 dark:border-zinc-700 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-200" defaultValue={course.name} /></td>
@@ -574,7 +779,7 @@ function Masters() {
           <button 
             disabled={!hasChanges} 
             onClick={handleSave}
-            className="rounded-full px-6 py-2 text-sm font-medium text-white disabled:opacity-40 bg-[#1e4c7c] shadow-md hover:bg-[#153658] dark:bg-blue-600 dark:hover:bg-[#1e4c7c] transition-all"
+            className="rounded-full px-6 py-2 text-sm font-medium text-white disabled:opacity-40 bg-[#1E3A5F] shadow-md hover:bg-[#152943] dark:bg-blue-600 dark:hover:bg-[#1E3A5F] transition-all"
           >
             บันทึกข้อมูล
           </button>

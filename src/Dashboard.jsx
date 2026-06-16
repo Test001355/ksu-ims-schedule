@@ -1,9 +1,10 @@
-﻿import React, { useMemo } from 'react';
-import { db } from './data';
+import React, { useMemo } from 'react';
+import { useSupabase } from './context/SupabaseContext';
 import { motion } from 'framer-motion';
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Legend } from 'recharts';
 
 function Dashboard() {
+  const { db } = useSupabase();
   // --- Analytics Logic ---
   const stats = useMemo(() => {
     const totalCourses = db.courses.length;
@@ -53,6 +54,17 @@ function Dashboard() {
       };
     }).sort((a, b) => b.hours - a.hours).slice(0, 5); // top 5
 
+    // Hours by Type
+    let totalTheoryHours = 0;
+    let totalPracticalHours = 0;
+    let totalUnknownHours = 0;
+    db.meetings.forEach(m => {
+      const hours = m.end - m.start;
+      if (m.type === 'ท') totalTheoryHours += hours;
+      else if (m.type === 'ป') totalPracticalHours += hours;
+      else totalUnknownHours += hours;
+    });
+
     return {
       totalCourses,
       totalInstructors,
@@ -61,15 +73,19 @@ function Dashboard() {
       schedulingProgress,
       scheduledCoursesCount,
       roomUsage,
-      instructorWorkload
+      instructorWorkload,
+      totalTheoryHours,
+      totalPracticalHours,
+      totalUnknownHours
     };
-  }, []);
+  }, [db]);
 
   const COLORS = ['#0ea5e9', '#ec4899', '#8b5cf6', '#10b981', '#f59e0b'];
 
-  const progressData = [
-    { name: 'จัดเสร็จแล้ว', value: stats.scheduledCoursesCount },
-    { name: 'รอจัดตาราง', value: stats.totalCourses - stats.scheduledCoursesCount },
+  const typeData = [
+    { name: 'ทฤษฎี (ท)', value: stats.totalTheoryHours, color: '#6366f1' }, // indigo-500
+    { name: 'ปฏิบัติ (ป)', value: stats.totalPracticalHours, color: '#10b981' }, // emerald-500
+    ...(stats.totalUnknownHours > 0 ? [{ name: 'ไม่ระบุ', value: stats.totalUnknownHours, color: '#94a3b8' }] : [])
   ];
 
   const StatCard = ({ title, value, subtitle, icon, delay }) => (
@@ -96,7 +112,7 @@ function Dashboard() {
     <div className="space-y-6">
       <div className="flex items-end justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-[#1e4c7c] to-[#3a7ca5] bg-clip-text text-transparent dark:from-[#3a7ca5] dark:to-[#1e4c7c]">Dashboard & Analytics</h1>
+          <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-[#1E3A5F] to-[#6B9DC2] bg-clip-text text-transparent dark:from-[#6B9DC2] dark:to-[#1E3A5F]">Dashboard & Analytics</h1>
           <p className="text-sm text-slate-500 dark:text-zinc-400 mt-1">ภาพรวมการใช้งานและสถิติข้อมูลระบบ</p>
         </div>
       </div>
@@ -111,12 +127,12 @@ function Dashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Pie Chart */}
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.5 }} className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-slate-200/60 dark:border-zinc-800">
-          <h3 className="text-lg font-semibold text-slate-800 dark:text-zinc-100 mb-6">ความคืบหน้าการจัดตาราง</h3>
+          <h3 className="text-lg font-semibold text-slate-800 dark:text-zinc-100 mb-6">สัดส่วนชั่วโมงสอน (ทฤษฎี vs ปฏิบัติ)</h3>
           <div className="h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
-                  data={progressData}
+                  data={typeData}
                   cx="50%"
                   cy="50%"
                   innerRadius={80}
@@ -124,8 +140,8 @@ function Dashboard() {
                   paddingAngle={5}
                   dataKey="value"
                 >
-                  {progressData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={index === 0 ? '#0ea5e9' : '#e2e8f0'} />
+                  {typeData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
                 </Pie>
                 <RechartsTooltip 
@@ -145,7 +161,7 @@ function Dashboard() {
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={stats.instructorWorkload}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} dy={10} />
+                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: '#64748b' }} dy={10} interval={0} />
                 <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} dx={-10} />
                 <RechartsTooltip 
                   cursor={{ fill: 'rgba(14, 165, 233, 0.05)' }}
