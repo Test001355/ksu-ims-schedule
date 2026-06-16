@@ -1,4 +1,4 @@
-﻿import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { clsx } from 'clsx';
 import { toast } from 'sonner';
 import confetti from 'canvas-confetti';
@@ -176,7 +176,8 @@ function Masters() {
             </div>
           </div>
           {days.map(day => {
-            const dayMeetings = meetings.filter(m => m.day === day.id);
+            const dayMapRev = {1:'MON',2:'TUE',3:'WED',4:'THU',5:'FRI',6:'SAT',0:'SUN'};
+            const dayMeetings = meetings.filter(m => m.day === dayMapRev[day.id]);
             
             // Calculate stacks for overlaps
             let stacks = [];
