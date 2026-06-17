@@ -15,7 +15,7 @@ import { useSupabase } from './context/SupabaseContext';
 import { supabase } from './supabaseClient';
 
 function App() {
-  const { user, db } = useSupabase();
+  const { user, db, hasUnsavedChanges, setHasUnsavedChanges } = useSupabase();
   const [activeTab, setActiveTab] = useState('ตาราง');
   const [viewType, setViewType] = useState('section'); // 'section', 'instructor', 'room'
   const [isListView, setIsListView] = useState(false); // Mobile-friendly list view toggle
@@ -217,7 +217,16 @@ function App() {
                     ? "text-[#1E3A5F] bg-white shadow-sm ring-0" 
                     : "hover:bg-white/10 hover:text-white"
                 )}
-                onClick={(e) => { e.preventDefault(); setActiveTab(tab.name); }}
+                onClick={(e) => { 
+                  e.preventDefault(); 
+                  if (hasUnsavedChanges) {
+                    if (!confirm('คุณมีการเปลี่ยนแปลงที่ยังไม่ได้บันทึก แน่ใจหรือไม่ว่าจะออกจากหน้านี้? ข้อมูลที่ยังไม่บันทึกจะสูญหาย')) {
+                      return;
+                    }
+                    setHasUnsavedChanges(false);
+                  }
+                  setActiveTab(tab.name); 
+                }}
               >
                 {tab.name}
               </a>

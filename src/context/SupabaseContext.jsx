@@ -17,6 +17,7 @@ export const SupabaseProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [session, setSession] = useState(null);
   const [user, setUser] = useState(null);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
   const fetchAllData = async () => {
     setLoading(true);
@@ -90,7 +91,10 @@ export const SupabaseProvider = ({ children }) => {
   }, []);
 
   return (
-    <SupabaseContext.Provider value={{ db, setDb, fetchAllData, loading, session, user }}>
+    <SupabaseContext.Provider value={{ 
+        db, setDb, fetchAllData, loading, session, user, 
+        hasUnsavedChanges, setHasUnsavedChanges 
+      }}>
       {children}
     </SupabaseContext.Provider>
   );

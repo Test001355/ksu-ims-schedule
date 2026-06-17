@@ -4,16 +4,18 @@ import { toast } from 'sonner';
 import confetti from 'canvas-confetti';
 import { v4 as uuidv4 } from 'uuid';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Trash2, Save, Upload, Download, RefreshCw, Plus, Minus, Search, Printer } from 'lucide-react';
+import * as XLSX from 'xlsx';
 import { supabase } from './supabaseClient';
 import { useSupabase } from './context/SupabaseContext';
 import { days, timeSlots } from './data';
 
 function Masters() {
   const [activeTab, setActiveTab] = useState('รายวิชา');
-  const [selectedSection, setSelectedSection] = useState('ce6641');
+  const [selectedSection, setSelectedSection] = useState('ทั้งหมด');
   const [courseSearchQuery, setCourseSearchQuery] = useState('');
   const [showAutocomplete, setShowAutocomplete] = useState(false);
-  const [hasChanges, setHasChanges] = useState(false);
+  const { hasUnsavedChanges: hasChanges, setHasUnsavedChanges: setHasChanges } = useSupabase();
   const { db: remoteDb, fetchAllData } = useSupabase();
   const [localDb, setLocalDb] = useState({ instructors: [], courses: [], rooms: [], sections: [], meetings: [] });
 
@@ -36,9 +38,20 @@ function Masters() {
   }, [localDb.courses]);
 
   const searchResults = curriculumList.filter(c => 
-    c.code.toLowerCase().includes(courseSearchQuery.toLowerCase()) || 
-    c.name.toLowerCase().includes(courseSearchQuery.toLowerCase())
+    (c.code || '').toLowerCase().includes(courseSearchQuery.toLowerCase()) || 
+    (c.name || '').toLowerCase().includes(courseSearchQuery.toLowerCase())
   );
+
+  React.useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (hasChanges) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [hasChanges]);
 
   const tabs = ['คาบสอน', 'รายวิชา', 'กลุ่มเรียน', 'อาจารย์', 'ห้องเรียน', 'หลักสูตร'];
 
@@ -131,6 +144,71 @@ function Masters() {
     toast.success('ดาวน์โหลด JSON สำเร็จ!');
   };
 
+  const exportToExcel = () => {
+    try {
+      let data = [];
+      let filename = 'master_data';
+      
+      switch (activeTab) {
+        case 'รายวิชา':
+          data = localDb.courses.map(c => ({
+            'รหัสวิชา': c.code,
+            'ชื่อวิชา': c.name,
+            'กลุ่มเรียน': localDb.sections.find(s => s.id === c.sectionId)?.name || '',
+            'หน่วยกิต': c.credits,
+            'ท': c.theoryHours,
+            'ป': c.practicalHours,
+            'รวม': c.theoryHours + c.practicalHours,
+            'อาจารย์': c.instructorIds.map(id => localDb.instructors.find(i => i.id === id)?.name || '').join(', ')
+          }));
+          filename = 'รายวิชา';
+          break;
+        case 'กลุ่มเรียน':
+          data = localDb.sections.map(s => ({
+            'กลุ่มเรียน': s.name,
+            'จำนวนนักศึกษา': s.headcount
+          }));
+          filename = 'กลุ่มเรียน';
+          break;
+        case 'อาจารย์':
+          data = localDb.instructors.map(i => ({
+            'ชื่อ-นามสกุล': i.name
+          }));
+          filename = 'รายชื่ออาจารย์';
+          break;
+        case 'ห้องเรียน':
+          data = localDb.rooms.map(r => ({
+            'ห้องเรียน': r.name,
+            'ความจุ (คน)': r.capacity
+          }));
+          filename = 'ห้องเรียน';
+          break;
+        default:
+          toast.error('ไม่สามารถส่งออกข้อมูลในแท็บนี้ได้');
+          return;
+      }
+      
+      if (data.length === 0) {
+        toast.error('ไม่มีข้อมูลให้ส่งออก');
+        return;
+      }
+
+      const worksheet = XLSX.utils.json_to_sheet(data);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Data');
+      
+      // Auto-fit columns
+      const cols = Object.keys(data[0]).map(key => ({ wch: Math.max(key.length, ...data.map(r => String(r[key] || '').length)) + 2 }));
+      worksheet['!cols'] = cols;
+
+      XLSX.writeFile(workbook, `ข้อมูล${filename}.xlsx`);
+      toast.success('ส่งออก Excel สำเร็จ!');
+    } catch (err) {
+      console.error(err);
+      toast.error('เกิดข้อผิดพลาดในการส่งออกไฟล์');
+    }
+  };
+
   const handleUploadJSON = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -151,6 +229,51 @@ function Masters() {
       }
     };
     reader.readAsText(file);
+    e.target.value = ''; // reset input
+  };
+
+  const handleUploadExcel = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const data = new Uint8Array(event.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const firstSheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[firstSheetName];
+        const json = XLSX.utils.sheet_to_json(worksheet);
+        
+        if (json.length > 0) {
+          const newCourses = json.map(row => ({
+            id: uuidv4(),
+            code: row['รหัสวิชา'] || row['code'] || '',
+            name: row['ชื่อวิชา'] || row['name'] || '',
+            sectionId: row['กลุ่มเรียน'] || row['กลุ่ม'] || row['section'] || (localDb.sections[0]?.id || ''),
+            credits: parseInt(row['หน่วยกิต'] || row['credits']) || 3,
+            theoryHours: parseInt(row['ท'] || row['theory']) || 2,
+            practicalHours: parseInt(row['ป'] || row['practical']) || 2,
+            instructorIds: []
+          })).filter(c => c.code || c.name); // Only add if code or name exists
+
+          if (newCourses.length > 0) {
+            setLocalDb(prev => ({
+              ...prev,
+              courses: [...prev.courses, ...newCourses]
+            }));
+            setHasChanges(true);
+            toast.success(`นำเข้า Excel สำเร็จ!`, { description: `เพิ่ม ${newCourses.length} รายวิชาเข้าระบบแล้ว` });
+            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+          } else {
+            toast.error('ไม่พบข้อมูลรายวิชาในไฟล์ Excel', { description: 'กรุณาตรวจสอบว่ามีคอลัมน์ รหัสวิชา, ชื่อวิชา หรือไม่' });
+          }
+        }
+      } catch (err) {
+        console.error(err);
+        toast.error('ไม่สามารถอ่านไฟล์ Excel ได้');
+      }
+    };
+    reader.readAsArrayBuffer(file);
     e.target.value = ''; // reset input
   };
 
@@ -363,6 +486,10 @@ function Masters() {
         </div>
         <div className="ml-auto flex flex-wrap items-center gap-2">
           <button onClick={handleDownloadJSON} className="rounded-xl border border-slate-200/60 dark:border-zinc-700 bg-white dark:bg-zinc-900 dark:text-zinc-200 dark:border-zinc-700/60 dark:bg-zinc-800/60 backdrop-blur-md px-4 py-2 text-sm font-medium hover:bg-slate-50 dark:hover:bg-zinc-700 transition-all shadow-sm dark:text-zinc-200">ดาวน์โหลด JSON</button>
+          <label className="cursor-pointer rounded-xl border border-slate-200/60 dark:border-zinc-700 bg-white dark:bg-zinc-900 dark:text-zinc-200 dark:border-zinc-700/60 dark:bg-zinc-800/60 backdrop-blur-md px-4 py-2 text-sm font-medium hover:bg-slate-50 dark:hover:bg-zinc-700 transition-all shadow-sm dark:text-zinc-200">
+            นำเข้า Excel
+            <input accept=".xlsx,.xls,.csv" className="hidden" type="file" onChange={handleUploadExcel} />
+          </label>
           <label className="cursor-pointer rounded-xl border border-slate-200/60 dark:border-zinc-700 bg-white dark:bg-zinc-900 dark:text-zinc-200 dark:border-zinc-700/60 dark:bg-zinc-800/60 backdrop-blur-md px-4 py-2 text-sm font-medium hover:bg-slate-50 dark:hover:bg-zinc-700 transition-all shadow-sm dark:text-zinc-200">
             นำเข้า JSON
             <input accept="application/json,.json" className="hidden" type="file" onChange={handleUploadJSON} />
@@ -599,7 +726,27 @@ function Masters() {
                   );
                 })}
                 <tr>
-                  <td colSpan="9" className="px-2 py-2"><button className="rounded border border-dashed border-zinc-300 px-3 py-1 text-xs text-zinc-600 hover:bg-zinc-50 dark:bg-zinc-800/50">+ เพิ่มรายการ</button></td>
+                  <td colSpan="9" className="px-2 py-2">
+                    <button 
+                      className="rounded border border-dashed border-zinc-300 px-3 py-1 text-xs text-zinc-600 hover:bg-zinc-50 dark:bg-zinc-800/50"
+                      onClick={() => {
+                        localDb.courses.push({
+                          id: uuidv4(),
+                          code: '',
+                          name: '',
+                          sectionId: selectedSection === 'ทั้งหมด' ? (localDb.sections[0]?.id || '') : selectedSection,
+                          credits: 3,
+                          theoryHours: 2,
+                          practicalHours: 2,
+                          instructorIds: []
+                        });
+                        setHasChanges(true);
+                        setLocalDb({...localDb});
+                      }}
+                    >
+                      + เพิ่มรายการ
+                    </button>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -763,7 +910,29 @@ function Masters() {
                     <td className="border-b border-zinc-100 px-2 py-1 align-top"><button className="rounded px-2 py-1 text-xs text-red-600 hover:bg-red-50">ลบ</button></td>
                   </tr>
                 ))}
-                <tr><td colSpan="8" className="px-2 py-2"><button className="rounded border border-dashed border-zinc-300 px-3 py-1 text-xs text-zinc-600 hover:bg-zinc-50 dark:bg-zinc-800/50">+ เพิ่มรายการ</button></td></tr>
+                <tr>
+                  <td colSpan="8" className="px-2 py-2">
+                    <button 
+                      className="rounded border border-dashed border-zinc-300 px-3 py-1 text-xs text-zinc-600 hover:bg-zinc-50 dark:bg-zinc-800/50"
+                      onClick={() => {
+                        localDb.courses.push({
+                          id: uuidv4(),
+                          code: '',
+                          name: '',
+                          sectionId: localDb.sections[0]?.id || '',
+                          credits: 3,
+                          theoryHours: 2,
+                          practicalHours: 2,
+                          instructorIds: []
+                        });
+                        setHasChanges(true);
+                        setLocalDb({...localDb});
+                      }}
+                    >
+                      + เพิ่มรายการ
+                    </button>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>

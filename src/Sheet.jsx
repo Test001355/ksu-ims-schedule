@@ -194,12 +194,21 @@ function Sheet({ customMeetings = null, isLivePreview = false, previewViewType =
                     .map(item => {
                       const leftPct = getTimeGridPosition(item.startHour);
                       const widthPct = getDurationPct(item.startHour, item.endHour);
+                      const isConflict = scheduleData.some(other => 
+                        other.id !== item.id && 
+                        other.day === item.day && 
+                        other.startHour < item.endHour && 
+                        other.endHour > item.startHour
+                      );
                       
                       return (
                         <div 
                           key={item.id} 
-                          title={item.title}
-                          className={clsx("absolute overflow-hidden rounded-lg border px-2.5 py-2 flex flex-col shadow-sm transition-all hover:shadow-md hover:z-10", item.colorClass)}
+                          title={isConflict ? `เวลาชนกัน! ${item.title}` : item.title}
+                          className={clsx(
+                            "absolute overflow-hidden rounded-lg border px-2.5 py-2 flex flex-col shadow-sm transition-all hover:shadow-md hover:z-10", 
+                            isConflict ? "bg-red-50 border-red-500 ring-2 ring-red-500 ring-inset z-20" : item.colorClass
+                          )}
                           style={{
                             left: `${leftPct}%`,
                             width: `calc(${widthPct}%)`,

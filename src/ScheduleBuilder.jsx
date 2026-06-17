@@ -128,9 +128,9 @@ function ScheduleBuilder() {
   };
 
   const filteredCourses = db.courses.filter(c => 
-    c.name.toLowerCase().includes(courseSearch.toLowerCase()) || 
-    c.code.toLowerCase().includes(courseSearch.toLowerCase()) ||
-    c.sectionId.toLowerCase().includes(courseSearch.toLowerCase())
+    (c.name || '').toLowerCase().includes(courseSearch.toLowerCase()) || 
+    (c.code || '').toLowerCase().includes(courseSearch.toLowerCase()) ||
+    (c.sectionId || '').toLowerCase().includes(courseSearch.toLowerCase())
   );
 
   // Auto-select first course when filter changes and current is hidden
