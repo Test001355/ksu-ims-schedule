@@ -2,10 +2,10 @@
 @custom-variant dark (&:is(.dark *));
 @layer base {
   :root {
-    font-family: 'Prompt', ui-sans-serif, system-ui, sans-serif;
+    font-family: 'Kanit', ui-sans-serif, system-ui, sans-serif;
   }
   body {
-    font-family: 'Prompt', ui-sans-serif, system-ui, sans-serif;
+    font-family: 'Kanit', ui-sans-serif, system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     transition: background-color 0.3s ease, color 0.3s ease;
