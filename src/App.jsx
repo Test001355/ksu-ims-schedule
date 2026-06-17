@@ -139,8 +139,8 @@ function App() {
         <div className="mx-auto flex flex-col md:flex-row max-w-6xl items-center gap-4 md:gap-6 px-4 py-3 relative z-10">
           <div className="flex w-full justify-between items-center md:w-auto">
             <span className="font-bold text-white flex items-center gap-3 truncate tracking-wide">
-              <div className="bg-white p-1 rounded-full shadow-inner">
-                <img src="/ksu-logo.png" alt="KSU" className="w-8 h-8 drop-shadow-sm" /> 
+              <div className="flex items-center">
+                <img src="/ksu-logo.png" alt="KSU" className="w-9 h-9 drop-shadow-sm" /> 
               </div>
               <span className="hidden sm:inline">ระบบจัดตารางเรียนตารางสอน</span><span className="sm:hidden">ระบบตารางสอน</span>
             </span>
