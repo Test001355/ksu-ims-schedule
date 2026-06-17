@@ -123,8 +123,8 @@ function Sheet({ customMeetings = null, isLivePreview = false, previewViewType =
       <div ref={printRef} className={clsx("print-sheet space-y-3 bg-white text-slate-900 shadow-sm", isLivePreview ? "p-0 rounded-none border-0" : "p-8 rounded-lg border border-zinc-300")}>
         {!isLivePreview && (
           <div className="text-center mb-8 relative">
-          <div className="absolute left-0 top-0 w-16 h-16 bg-sky-100 rounded-full flex items-center justify-center border-2 border-sky-600">
-            <span className="text-2xl">🏛️</span>
+          <div className="absolute left-0 top-0 w-16 h-16 flex items-center justify-center">
+            <img src="/ksu-logo.png" alt="KSU Logo" className="w-full h-full object-contain" />
           </div>
           <div className="font-bold text-xl">มหาวิทยาลัยกาฬสินธุ์ (Kalasin University)</div>
           <div className="text-sm mt-1">คณะวิศวกรรมศาสตร์และเทคโนโลยีอุตสาหกรรม</div>
