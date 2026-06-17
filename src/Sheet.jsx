@@ -134,7 +134,7 @@ function Sheet({ customMeetings = null, isLivePreview = false, previewViewType =
         )}
 
         {!isLivePreview && distinctCourses.length > 0 && (
-          <table className="w-full border-collapse text-xs mb-6">
+          <table className="w-full border-collapse text-[11px] print:text-[10px] mb-4 print:mb-2">
             <thead>
               <tr className="bg-zinc-100 text-left">
                 <th className="border border-zinc-300 px-2 py-1 w-8 text-center">ที่</th>
@@ -180,7 +180,7 @@ function Sheet({ customMeetings = null, isLivePreview = false, previewViewType =
             </div>
 
             {days.filter(d => d.id >= 1 && d.id <= 5).map(day => (
-              <div key={day.id} className="flex border-b border-zinc-100 last:border-b-0 min-h-[100px]">
+              <div key={day.id} className="flex border-b border-zinc-100 last:border-b-0 min-h-[80px] print:min-h-[60px]">
                 <div className="w-20 shrink-0 px-2 py-2 text-sm font-medium text-zinc-700 bg-zinc-50 flex items-center justify-center">{day.name}</div>
                 <div className="relative flex-1">
                   <div className="absolute inset-0 flex">
@@ -225,7 +225,7 @@ function Sheet({ customMeetings = null, isLivePreview = false, previewViewType =
         </div>
 
         {!isLivePreview && (
-          <div className="mt-16 flex justify-between px-12 text-center text-sm">
+          <div className="mt-8 print:mt-6 flex justify-between px-12 text-center text-xs print:text-[10px]">
           <div>
             <div className="mb-8">ลงชื่อ..............................................................</div>
             <div>( .............................................................. )</div>
