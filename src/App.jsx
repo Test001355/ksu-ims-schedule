@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { timeSlots, days, getScheduleForEntity } from './data';
 import { clsx } from 'clsx';
-import { Loader2, Moon, Sun, LogOut, AlertTriangle, ChevronDown, List, Grid, Share2 } from 'lucide-react';
+import { Loader2, Moon, Sun, LogOut, AlertTriangle, ChevronDown, List, Grid, Share2, Printer, Download } from 'lucide-react';
+import * as XLSX from 'xlsx';
 import Masters from './Masters';
 import Sheet from './Sheet';
 import Dashboard from './Dashboard';
@@ -95,6 +96,44 @@ function App() {
       setConflicts([...new Set(currentConflicts)]);
     }
   }, [selectedEntity, viewType, loading, db.meetings]);
+
+  const exportToExcel = () => {
+    if (!scheduleData || scheduleData.length === 0) {
+      import('sonner').then(({ toast }) => toast.error('ไม่มีข้อมูลสำหรับส่งออก'));
+      return;
+    }
+    
+    // Sort by day and time
+    const sortedData = [...scheduleData].sort((a, b) => {
+      if (a.day !== b.day) return a.day - b.day;
+      return a.startHour - b.startHour;
+    });
+
+    const dayNames = ['จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์', 'อาทิตย์'];
+    
+    const excelData = sortedData.map(item => ({
+      'วัน': dayNames[item.day - 1],
+      'เวลาเริ่ม': item.startTime,
+      'เวลาเลิก': item.endTime,
+      'รหัสวิชา': item.courseCode,
+      'ชื่อวิชา': item.courseName,
+      'ประเภท': item.type,
+      'กลุ่มเรียน': item.sectionName,
+      'ห้องเรียน': item.roomName,
+      'อาจารย์ผู้สอน': item.instructorName
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(excelData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "ตารางสอน");
+    
+    let entityName = selectedEntity;
+    if (viewType === 'section') entityName = `กลุ่ม_${selectedEntity}`;
+    else if (viewType === 'instructor') entityName = `อ_${db.instructors.find(i => i.id === selectedEntity)?.name || selectedEntity}`;
+    else if (viewType === 'room') entityName = `ห้อง_${db.rooms.find(r => r.id === selectedEntity)?.name || selectedEntity}`;
+    
+    XLSX.writeFile(workbook, `ตารางสอน_${entityName}.xlsx`);
+  };
 
   const tabs = [
     { name: 'ตาราง', path: '/', private: false },
@@ -294,12 +333,28 @@ function App() {
                         toast.success('คัดลอกลิงก์สำเร็จ', { description: 'สามารถส่งลิงก์นี้ให้เพื่อนหรือนักศึกษาได้เลยครับ' });
                       });
                     }}
-                    className="flex shrink-0 items-center justify-center gap-2 px-3 sm:px-4 py-2 bg-blue-50 hover:bg-blue-100 dark:bg-sky-500/10 dark:hover:bg-sky-500/20 text-blue-600 dark:text-sky-400 rounded-xl font-medium text-sm transition-colors border border-blue-200/50 dark:border-sky-500/20"
+                    className="flex shrink-0 items-center justify-center gap-2 px-3 sm:px-4 py-2 bg-blue-50 hover:bg-blue-100 dark:bg-sky-500/10 dark:hover:bg-sky-500/20 text-blue-600 dark:text-sky-400 rounded-xl font-medium text-sm transition-colors border border-blue-200/50 dark:border-sky-500/20 print:hidden"
                     title="แชร์ตารางนี้"
                   >
-                  <Share2 size={16} />
-                  <span>แชร์ลิงก์</span>
-                </button>
+                    <Share2 size={16} />
+                    <span className="hidden sm:inline">แชร์</span>
+                  </button>
+                  <button 
+                    onClick={exportToExcel}
+                    className="flex shrink-0 items-center justify-center gap-2 px-3 sm:px-4 py-2 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-500/10 dark:hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 rounded-xl font-medium text-sm transition-colors border border-emerald-200/50 dark:border-emerald-500/20 print:hidden"
+                    title="ส่งออกเป็น Excel"
+                  >
+                    <Download size={16} />
+                    <span className="hidden sm:inline">Excel</span>
+                  </button>
+                  <button 
+                    onClick={() => window.print()}
+                    className="flex shrink-0 items-center justify-center gap-2 px-3 sm:px-4 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-slate-700 dark:text-zinc-300 rounded-xl font-medium text-sm transition-colors border border-slate-200/80 dark:border-zinc-700 print:hidden"
+                    title="พิมพ์ตารางสอน"
+                  >
+                    <Printer size={16} />
+                    <span className="hidden sm:inline">พิมพ์</span>
+                  </button>
                 </div>
                 
                 <div className="flex p-1 rounded-xl bg-white/60 dark:bg-zinc-900/60 backdrop-blur-md shadow-sm border border-slate-200/60 dark:border-zinc-800 ml-auto sm:ml-2">

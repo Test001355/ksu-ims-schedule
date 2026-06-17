@@ -23,5 +23,40 @@ html, body, #root {
       background: white !important;
       color: black !important;
     }
+    
+    header, 
+    nav, 
+    button, 
+    select,
+    .print\:hidden {
+      display: none !important;
+    }
+
+    /* Force background colors and borders to print */
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    /* Remove backdrop blurs for sharp printing */
+    .backdrop-blur-xl, .backdrop-blur-md, .backdrop-blur-sm {
+      backdrop-filter: none !important;
+      background: white !important;
+    }
+
+    /* Ensure the table fits */
+    main {
+      max-width: 100% !important;
+      width: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    /* Specific fix for schedule container */
+    .bg-white\/60 {
+      border: none !important;
+      box-shadow: none !important;
+      background: transparent !important;
+    }
   }
 }
