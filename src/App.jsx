@@ -300,6 +300,7 @@ function App() {
                   <Share2 size={16} />
                   <span>แชร์ลิงก์</span>
                 </button>
+                </div>
                 
                 <div className="flex p-1 rounded-xl bg-white/60 dark:bg-zinc-900/60 backdrop-blur-md shadow-sm border border-slate-200/60 dark:border-zinc-800 ml-auto sm:ml-2">
                   <button onClick={() => setIsListView(false)} className={clsx("p-1.5 rounded-lg transition-all", !isListView ? "bg-white text-[#1E3A5F] shadow-sm dark:bg-zinc-800 dark:text-sky-400" : "text-slate-500 hover:text-slate-700 dark:text-zinc-500 dark:hover:text-zinc-300")} title="มุมมองตาราง">
