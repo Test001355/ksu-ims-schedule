@@ -265,37 +265,38 @@ function App() {
                 <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-[#1E3A5F] to-[#6B9DC2] bg-clip-text text-transparent dark:from-sky-300 dark:to-sky-100">ตารางเรียนตารางสอน</h1>
                 <p className="text-sm text-slate-500 dark:text-zinc-400 mt-1">เลือกมุมมองและรายการเพื่อดูตารางทั้งสัปดาห์</p>
               </div>
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-                <div className="flex p-1 rounded-xl bg-white/60 dark:bg-zinc-900/60 backdrop-blur-md shadow-sm border border-slate-200/60 dark:border-zinc-800">
-                  <button onClick={() => setViewType('section')} className={clsx("px-4 py-1.5 text-sm font-medium rounded-lg transition-all", viewType === 'section' ? "bg-white text-[#1E3A5F] shadow-sm dark:bg-zinc-800 dark:text-sky-400" : "text-slate-600 dark:text-zinc-400")}>กลุ่มเรียน</button>
-                  <button onClick={() => setViewType('instructor')} className={clsx("px-4 py-1.5 text-sm font-medium rounded-lg transition-all", viewType === 'instructor' ? "bg-white text-[#1E3A5F] shadow-sm dark:bg-zinc-800 dark:text-sky-400" : "text-slate-600 dark:text-zinc-400")}>อาจารย์</button>
-                  <button onClick={() => setViewType('room')} className={clsx("px-4 py-1.5 text-sm font-medium rounded-lg transition-all", viewType === 'room' ? "bg-white text-[#1E3A5F] shadow-sm dark:bg-zinc-800 dark:text-sky-400" : "text-slate-600 dark:text-zinc-400")}>ห้องเรียน</button>
+              <div className="flex flex-col gap-3 w-full sm:w-auto sm:flex-row sm:items-center">
+                <div className="flex w-full sm:w-auto p-1 rounded-xl bg-white/60 dark:bg-zinc-900/60 backdrop-blur-md shadow-sm border border-slate-200/60 dark:border-zinc-800">
+                  <button onClick={() => setViewType('section')} className={clsx("flex-1 sm:flex-none px-2 sm:px-4 py-1.5 text-xs sm:text-sm font-medium rounded-lg transition-all", viewType === 'section' ? "bg-white text-[#1E3A5F] shadow-sm dark:bg-zinc-800 dark:text-sky-400" : "text-slate-600 dark:text-zinc-400")}>กลุ่มเรียน</button>
+                  <button onClick={() => setViewType('instructor')} className={clsx("flex-1 sm:flex-none px-2 sm:px-4 py-1.5 text-xs sm:text-sm font-medium rounded-lg transition-all", viewType === 'instructor' ? "bg-white text-[#1E3A5F] shadow-sm dark:bg-zinc-800 dark:text-sky-400" : "text-slate-600 dark:text-zinc-400")}>อาจารย์</button>
+                  <button onClick={() => setViewType('room')} className={clsx("flex-1 sm:flex-none px-2 sm:px-4 py-1.5 text-xs sm:text-sm font-medium rounded-lg transition-all", viewType === 'room' ? "bg-white text-[#1E3A5F] shadow-sm dark:bg-zinc-800 dark:text-sky-400" : "text-slate-600 dark:text-zinc-400")}>ห้องเรียน</button>
                 </div>
                 
-                <div className="relative">
-                  <select 
-                    value={selectedEntity}
-                    onChange={(e) => setSelectedEntity(e.target.value)}
-                    className="h-10 w-full appearance-none rounded-xl border border-slate-200/60 dark:border-zinc-700 bg-white/80 dark:bg-zinc-900 backdrop-blur-sm pl-4 pr-10 text-sm outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100 dark:focus:ring-sky-900 sm:w-auto shadow-sm transition-all"
+                <div className="flex gap-2 w-full sm:w-auto">
+                  <div className="relative flex-1 sm:flex-none">
+                    <select 
+                      value={selectedEntity}
+                      onChange={(e) => setSelectedEntity(e.target.value)}
+                      className="h-10 w-full appearance-none rounded-xl border border-slate-200/60 dark:border-zinc-700 bg-white/80 dark:bg-zinc-900 backdrop-blur-sm pl-4 pr-10 text-sm outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100 dark:focus:ring-sky-900 shadow-sm transition-all truncate"
+                    >
+                      {options && options.map(opt => (
+                        <option key={opt.id} value={opt.id}>{opt.name || opt.code || opt.id}</option>
+                      ))}
+                    </select>
+                    <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-zinc-500" size={14} />
+                  </div>
+                  
+                  <button 
+                    onClick={() => {
+                      const url = `${window.location.origin}${window.location.pathname}?view=${viewType}&id=${selectedEntity}`;
+                      navigator.clipboard.writeText(url);
+                      import('sonner').then(({ toast }) => {
+                        toast.success('คัดลอกลิงก์สำเร็จ', { description: 'สามารถส่งลิงก์นี้ให้เพื่อนหรือนักศึกษาได้เลยครับ' });
+                      });
+                    }}
+                    className="flex shrink-0 items-center justify-center gap-2 px-3 sm:px-4 py-2 bg-blue-50 hover:bg-blue-100 dark:bg-sky-500/10 dark:hover:bg-sky-500/20 text-blue-600 dark:text-sky-400 rounded-xl font-medium text-sm transition-colors border border-blue-200/50 dark:border-sky-500/20"
+                    title="แชร์ตารางนี้"
                   >
-                    {options && options.map(opt => (
-                      <option key={opt.id} value={opt.id}>{opt.name || opt.code || opt.id}</option>
-                    ))}
-                  </select>
-                  <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-zinc-500" size={14} />
-                </div>
-                
-                <button 
-                  onClick={() => {
-                    const url = `${window.location.origin}${window.location.pathname}?view=${viewType}&id=${selectedEntity}`;
-                    navigator.clipboard.writeText(url);
-                    import('sonner').then(({ toast }) => {
-                      toast.success('คัดลอกลิงก์สำเร็จ', { description: 'สามารถส่งลิงก์นี้ให้เพื่อนหรือนักศึกษาได้เลยครับ' });
-                    });
-                  }}
-                  className="hidden sm:flex items-center gap-2 px-4 py-2 bg-blue-50 hover:bg-blue-100 dark:bg-sky-500/10 dark:hover:bg-sky-500/20 text-blue-600 dark:text-sky-400 rounded-xl font-medium text-sm transition-colors border border-blue-200/50 dark:border-sky-500/20"
-                  title="แชร์ตารางนี้"
-                >
                   <Share2 size={16} />
                   <span>แชร์ลิงก์</span>
                 </button>
